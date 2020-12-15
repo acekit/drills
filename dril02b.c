@@ -1,6 +1,8 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+
 /*
 2 じゃんけんゲーム
 PCとじゃんけん対戦するゲーム。
@@ -26,14 +28,14 @@ int main( void )
   char pc_val[256];
   	srand(time(NULL));
   while(on_loop){
-    printf("Please, select your key from '1' or '2' or '3' or 'e'.\n 1=グー,2=チョキ,3=パー e=終了\n");
+    printf("Please, select your key from '1' or '2' or '3' or '9'.\n 1=グー,2=チョキ,3=パー 9=終了\n");
     fgets(user_input,2,stdin);//input user's choice
       (void)getchar();
-    if ((user_input[0]=='e')) {
-      break;
-    }else {
       printf("Your choice is :%s \n",user_input);      
       user=atoi(user_input);
+    if ((user==9)) {
+      break;
+    }else {
      if(user!=G&&user!=C&&user!=P)    
      {
      	//NG 指定した手以外の場合
@@ -46,26 +48,27 @@ int main( void )
       printf("%d\n",pc);
       //calculate cpu choice
       if(pc==G){
-      	pc_val="グー";      	
+        strcat(pc_val,"グー");
       }else if(pc==C){
-      	pc_val="チョキ";      	
+        strcat(pc_val,"チョキ");
       }else{
-      	pc_val="パー";      	
+        strcat(pc_val,"パー");
       }
-        printf("PC is :%c\n",pc_val );
+        printf("PC is :%s\n",pc_val );
       if(user==pc)
       {
-        printf("結果:%c\n","あいこ");
+        printf("結果:%s\n","あいこ");
       }else if(user<pc){
-        printf("結果:%c\n","勝ち");      	        
+        printf("結果:%s\n","勝ち");      	        
         count_win++;
       	}else
       	{
-        printf("結果:%c\n","負け");      	      		
+        printf("結果:%s\n","負け");      	      		
       	}
       	printf("勝率（勝数/全数）=%f",(float)count_win/(float)count_all);
+      }
     }
-}
+  }
 printf("%s\n","Thank you for your playing!" );
 printf("%s\n", "Push any keys.");
 (void)getchar();
