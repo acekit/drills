@@ -9,6 +9,33 @@ int N_FUNCTION = 4;
 加減乗除専用の関数を作成すること。
 */
 
+float cal_four_arithmetic_operations(float , float , int , int );//四則演算する関数
+
+int main(void)
+{
+  //input from stdin a,b
+  float input[BUFF_LENGTH];
+  float buff[3];
+  for (int i = 0; i < N_INPUT; i++)
+  {
+    printf("%s%d%s\n", "Please, input ", N_INPUT - i, "numbers.");
+    scanf("%f", &input[i]);
+    printf("input is %f \n", input[i]);
+  }
+  (void)getchar(); //'¥n'の読み捨て
+
+  //printf +,-,*,/
+  float val = 0;
+  for (int i = 0; i < N_FUNCTION; i++)
+  {
+    val = cal_four_arithmetic_operations(input[0], input[1], i, 1);
+    printf("%f \n", (float)val);
+  }
+  printf("%s \n", "Please, push any key.");
+  (void)getchar();//画面を消さないため
+  return 0;
+}
+
 /*
 float a       :先方の入力値
 float b       :後方の入力値
@@ -57,30 +84,4 @@ float cal_four_arithmetic_operations(float a, float b, int mode, int on_print)
     printf("A%cB=%f \n", ope, result);
   }
   return result;
-}
-
-int main(void)
-{
-  //input from stdin a,b
-  float input[BUFF_LENGTH];
-  float buff[3];
-  for (int i = 0; i < N_INPUT; i++)
-  {
-    printf("%s%d%s\n", "Please, input ", N_INPUT - i, "numbers.");
-    scanf("%f", &input[i]);
-    printf("input is %f \n", input[i]);
-  }
-  (void)getchar(); //'¥n'の読み捨て
-
-  //printf +,-,*,/
-  float val = 0;
-  for (int i = 0; i < N_FUNCTION; i++)
-  {
-    val = cal_four_arithmetic_operations(input[0], input[1], i, 1);
-    printf("%f \n", (float)val);
-  }
-  printf("%s \n", "Please, push any key.");
-  // scanf("%c", &buff[0]);
-  (void)getchar();
-  return 0;
 }
