@@ -10,11 +10,11 @@ PCとじゃんけん対戦するゲーム。
 PCはランダム値により手を決め、
 結果を判定・表示する。
 勝率も表示する。
-グー：1,チョキ：2,パー：3 
 */
-#define G 1
-#define C 2
-#define P 3
+#define G 1 //ぐー
+#define C 2 //チョキ
+#define P 3 //パー
+#define Q 9 //終了
 
 int main(void)
 {
@@ -25,16 +25,18 @@ int main(void)
   char user_input[2]; //buffer user's choice ex) g,c,p or e:escape from loop
   int user;
   int pc;
-  srand(time(NULL));
+  char pc_val[256];
+  srand(time(NULL)); //rand初期化
+
   while (on_loop)
-  {
-    printf("Please, select your key from '1' or '2' or '3' or '9'.\n 1=グー,2=チョキ,3=パー 9=終了\n");
+  { //終了するまで継続してじゃんけん
+    printf("Please, select your key from '%d' or '%d' or '%d' or '%d'.\n 1=グー,2=チョキ,3=パー 9=終了\n", G, C, P, Q);
     fgets(user_input, 2, stdin); //input user's choice
-    (void)getchar();
+    (void)getchar();             //¥nの読み飛ばし
     printf("Your choice is :%s \n", user_input);
     user = atoi(user_input);
-    if ((user == 9))
-    {
+    if ((user == Q))
+    { //終了処理の場合
       break;
     }
     else
@@ -51,8 +53,8 @@ int main(void)
         srand((unsigned int)time(NULL)); //初期化
         pc = (rand() % 3) + 1;
         printf("%d\n", pc);
-        char pc_val[256];
         //calculate cpu choice
+        memset(pc_val, '\0', sizeof(pc_val));
         if (pc == G)
         {
           strcat(pc_val, "グー");
@@ -83,6 +85,7 @@ int main(void)
       }
     }
   }
+  //終了時の処理
   printf("%s\n", "Thank you for your playing!");
   printf("%s\n", "Push any keys.");
   (void)getchar();
