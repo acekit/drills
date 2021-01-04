@@ -1,22 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
-int BUFF_LENGTH = 2;
-int N_INPUT = 2;
-int N_FUNCTION = 4;
+#define BUFF_LENGTH 2
+#define N_INPUT 2
+#define N_FUNCTION 4
+#define ADD 0
+#define SUB 1
+#define MUL 2
+#define DIV 3
+#define ZERO 0
+
 /*
 1 四則演算
 2つの数値を入力すると、加減乗除結果を表示する。
 加減乗除専用の関数を作成すること。
 */
 
-float cal_four_arithmetic_operations(float , float , int , int );//四則演算する関数
+float CalFourArithmeticOperations(float , float , unsigned char , unsigned char );//四則演算する関数
 
 int main(void)
 {
   //input from stdin a,b
   float input[BUFF_LENGTH];
   float buff[3];
-  for (int i = 0; i < N_INPUT; i++)
+  int i = 0 ;
+  float val = 0;
+  for ( i = 0; i < N_INPUT; i++)
   {
     printf("%s%d%s\n", "Please, input ", N_INPUT - i, "numbers.");
     scanf("%f", &input[i]);
@@ -25,13 +33,12 @@ int main(void)
   (void)getchar(); //'¥n'の読み捨て
 
   //printf +,-,*,/
-  float val = 0;
-  for (int i = 0; i < N_FUNCTION; i++)
+  for ( i = 0; i < N_FUNCTION; i++)
   {
-    val = cal_four_arithmetic_operations(input[0], input[1], i, 1);
+    val = CalFourArithmeticOperations(input[0], input[1], i, 1);
     printf("%f \n", (float)val);
   }
-  printf("%s \n", "Please, push any key.");
+  printf("%s \n", "Please, push Enter key.");
   (void)getchar();//画面を消さないため
   return 0;
 }
@@ -39,46 +46,48 @@ int main(void)
 /*
 float a       :先方の入力値
 float b       :後方の入力値
-int mode      :1.+ , 2.- , 3.* , 4./ 
+int mode      :ADD.+ , SUB.- , MUL.* , DIV./ 
 int on_print  :printfあり、なし
 */
-float cal_four_arithmetic_operations(float a, float b, int mode, int on_print)
+float CalFourArithmeticOperations(float a, float b, unsigned char mode, unsigned char on_print)
 {
   float result = 0;
-  char ope;
+  unsigned char ope = 'E';
   switch (mode)
   {
-  case 0 /* 足し算 */:
+  case ADD /* 足し算 */:
     result = a + b;
     ope = '+';
     break;
-  case 1 /* 引き算 */:
+  case SUB /* 引き算 */:
     result = a - b;
     ope = '-';
     break;
-  case 2 /* 掛け算 */:
+  case MUL /* 掛け算 */:
     result = a * b;
     ope = '*';
     break;
-  case 3 /* 割り算 */:
-    if (b == 0)
-    {
-      result = 0;
-      ope = 'E';
-    }
-    else
+  case DIV /* 割り算 */:
+    if ((b > 0) || (b < 0))
     {
       result = a / b;
       ope = '/';
     }
     break;
   default:
-    ope = 'E';
+    printf("Coding Error.\n");      
+    on_print = 0;
     break;
   }
   if (on_print)
   {
-    printf("A%cB=%f \n", ope, result);
+    if (b == ZERO)
+    {
+      printf("The second number should be non-zero.\n");      
+    }else
+    {
+      printf("A%cB=%f \n", ope, result);
+    }
   }
   return result;
 }
