@@ -48,22 +48,19 @@ float cal_four_arithmetic_operations(float a, float b, int mode, int on_print)
   char ope;
   switch (mode)
   {
-  case 0 /* value */:
+  case 0 /* 足し算 */:
     result = a + b;
     ope = '+';
-    //printf("A+B=%f \n", result);
     break;
-  case 1 /* value */:
+  case 1 /* 引き算 */:
     result = a - b;
     ope = '-';
-    //printf("A-B=%f \n", result);
     break;
-  case 2 /* value */:
+  case 2 /* 掛け算 */:
     result = a * b;
     ope = '*';
-    //printf("A*B=%f \n", result);
     break;
-  case 3 /* value */:
+  case 3 /* 割り算 */:
     if (b == 0)
     {
       result = 0;
