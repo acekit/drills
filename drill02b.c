@@ -23,6 +23,7 @@ int main(void)
   int count_win = 0;
   int on_loop = 1;
   char user_input[2]; //buffer user's choice ex) g,c,p or e:escape from loop
+  char user_input_char=0;
   int user;
   int pc;
   char pc_val[256];
