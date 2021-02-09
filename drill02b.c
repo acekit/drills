@@ -40,18 +40,29 @@ int main(void)
 
   while (1)
   { //終了するまで継続してじゃんけん
+  
+    //対戦最大数と、現在の対戦数/最大数を表示
     printf("The maximum number of times you can play rock-paper-scissors is %d. Now:%d/%d\n",N_MAX,count_all,N_MAX);
+  
+    //入力すべき内容を指示
     printf("Please, select your key from '%d' or '%d' or '%d' or '%d'.\n 1=グー,2=チョキ,3=パー 9=終了\n", G, C, P, Q);
+
+    //ユーザーの手を取得
     user = GetUserChoiseByNum(sizeof(user_input),user_input);
     if(user==Q||count_all==N_MAX)//終了する場合
     {
       break;
     }
-
+    //試行回数の更新
     count_all++;
-    
+
+    //PCの手を取得
     pc = GetCpuChoiseByNum();
+
+    //勝敗の判定
     win_lose_val = JudgeWinOrLose(user,pc);
+
+    //勝敗の表示
     switch (win_lose_val)
     {
       case 1:
@@ -65,8 +76,11 @@ int main(void)
       printf("結果:負け\n");
       break;
     }
+
+    //勝率の算出
     win_ratio=CalculateTheWinningPercentage(count_win,count_all);
 
+    //勝率の表示
     printf("勝率（勝数/全数）=%f\n", win_ratio);
   }
   //終了時の処理
