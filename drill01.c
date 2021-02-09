@@ -33,13 +33,10 @@ int main(void)
   {
     printf("%s%d%s\n", "Please, input ", N_INPUT - i, "numbers.");
     printf("%s\n", "The maximum input value is 8 characters including the decimal point.");
-    //scanf("%lf", &input[i]);
     fgets(input_buff,sizeof(input_buff),stdin);//get input number
-    if (input_buff[strlen(input_buff) - 1]=='\n')
+    if (input_buff[strlen(input_buff) - 1] != '\n')
     {
-      //input_buff[strlen(input_buff) - 1]='\0';
-    }else
-    {
+      is_over_digits = 1;
       while (getchar()!='\n')
         {//'¥n'まで読み捨て
           if (is_over_digits)

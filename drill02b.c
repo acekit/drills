@@ -6,89 +6,211 @@
 /*
 2 じゃんけんゲーム
 PCとじゃんけん対戦するゲーム。
-人間はキーを押下し、
-PCはランダム値により手を決め、
-結果を判定・表示する。
-勝率も表示する。
+1.人間はキーを押下し、
+2.PCはランダム値により手を決め、
+3.結果を判定・表示する。
+4.勝率も表示する。
 */
 #define G 1 //ぐー
 #define C 2 //チョキ
 #define P 3 //パー
 #define Q 9 //終了
+#define INPUT_LENGTH 2//1文字+終端文字
+#define N_MAX 255//最大対戦回数　カウンタがunsigned charのためこれより小さい数
+void GetUserInput(unsigned char, char *);//標準入力から文字列を得る関数
+unsigned char GetUserChoiseByNum(unsigned char,char * );//ユーザーの入力を取得する関数
+unsigned char GetCpuChoiseByNum(void); //PCの手を決定する関数
+unsigned char JudgeWinOrLose(unsigned char, unsigned char); //勝敗を判定する関数
+float CalculateTheWinningPercentage(unsigned char,unsigned char); //勝率を計算する関数
 
 int main(void)
 {
   //start jangkeng
-  int count_all = 0;
-  int count_win = 0;
-  int on_loop = 1;
-  char user_input[2]; //buffer user's choice ex) g,c,p or e:escape from loop
+  unsigned char count_all = 0;//全対戦回数
+  unsigned char count_win = 0;//全勝利数
+  unsigned char off_loop = 0;
+  char user_input[INPUT_LENGTH]; //buffer user's choice ex) g,c,p or e:escape from loop
   char user_input_char=0;
-  int user;
-  int pc;
+  unsigned char user;
+  unsigned char pc;
   char pc_val[256];
+  unsigned char win_lose_val = 0;
+  float win_ratio=0;
   srand(time(NULL)); //rand初期化
 
-  while (on_loop)
+  while (1)
   { //終了するまで継続してじゃんけん
+    printf("The maximum number of times you can play rock-paper-scissors is %d. Now:%d/%d\n",N_MAX,count_all,N_MAX);
     printf("Please, select your key from '%d' or '%d' or '%d' or '%d'.\n 1=グー,2=チョキ,3=パー 9=終了\n", G, C, P, Q);
-    fgets(user_input, 2, stdin); //input user's choice
-    (void)getchar();             //¥nの読み飛ばし
-    printf("Your choice is :%s \n", user_input);
-    user = atoi(user_input);
-    if ((user == Q))
-    { //終了処理の場合
+    user = GetUserChoiseByNum(sizeof(user_input),user_input);
+    if(user==Q||count_all==N_MAX)//終了する場合
+    {
       break;
     }
-    else
+
+    count_all++;
+    
+    pc = GetCpuChoiseByNum();
+    win_lose_val = JudgeWinOrLose(user,pc);
+    switch (win_lose_val)
     {
-      if (user != G && user != C && user != P)
-      {
-        //NG 指定した手以外の場合
-        printf("You selected an invalid key.%s\n", user_input);
-      }
-      else
-      {
-        //OK 指定した手の場合
-        count_all++;
-        srand((unsigned int)time(NULL)); //初期化
-        pc = (rand() % 3) + 1;
-        printf("%d\n", pc);
-        //calculate cpu choice
-        memset(pc_val, '\0', sizeof(pc_val));
-        if (pc == G)
-        {
-          strcat(pc_val, "グー");
-        }
-        else if (pc == C)
-        {
-          strcat(pc_val, "チョキ");
-        }
-        else
-        {
-          strcat(pc_val, "パー");
-        }
-        printf("PC is :%s\n", pc_val);
-        if (user == pc)
-        {
-          printf("結果:%s\n", "あいこ");
-        }
-        else if (user < pc)
-        {
-          printf("結果:%s\n", "勝ち");
-          count_win++;
-        }
-        else
-        {
-          printf("結果:%s\n", "負け");
-        }
-        printf("勝率（勝数/全数）=%f", (float)count_win / (float)count_all);
-      }
+      case 1:
+      printf("結果:勝ち\n");
+      count_win++;
+      break;
+      case 2:
+      printf("結果:あいこ\n");
+      break;
+      case 0:
+      printf("結果:負け\n");
+      break;
     }
+    win_ratio=CalculateTheWinningPercentage(count_win,count_all);
+
+    printf("勝率（勝数/全数）=%f\n", win_ratio);
   }
   //終了時の処理
   printf("%s\n", "Thank you for your playing!");
-  printf("%s\n", "Push any keys.");
+  printf("%s\n", "Push Enter keys.");
   (void)getchar();
   return 0;
+}
+/*
+標準入力より、ユーザーの入力値を得る
+unsigned char input_len   : 入力する文字数
+         char *input_p    : 入力した値を格納する配列のポインタ
+*/
+void GetUserInput(unsigned char input_len, char *input_p)
+{
+  unsigned char is_under_digits=1;
+  while(1){
+    fgets(input_p,input_len,stdin);//get input number
+    if (input_p[strlen(input_p) -1] != '\n')
+    {
+      is_under_digits = 1;
+      while (getchar()!='\n')
+        {//'¥n'まで読み捨て
+          if (is_under_digits)
+          {
+            printf("There are too many characters to enter. Please, input again.\n");   
+            is_under_digits = 0;     
+          }
+        }  
+    }
+    if (is_under_digits)
+    {
+      break;
+    }
+  }
+  return ;
+}
+/*
+//ユーザーの入力を取得する関数
+unsigned char input_len   : 入力する文字数
+         char *input_p    : 入力した値を格納する配列のポインタ
+unsigned char user        : 数字に変化した後のユーザの選択         
+*/
+unsigned char GetUserChoiseByNum(unsigned char input_len,char *input_p )
+{
+  unsigned char user;
+  unsigned char on_loop=1;
+  while (on_loop)
+  {
+    GetUserInput(input_len,input_p);
+    user = (unsigned char)atoi(input_p);
+    switch (user)
+    {
+      case G:
+        printf("Your choice is %c=グー \n",G);
+        on_loop=0;
+        break;
+      case C:
+        printf("Your choice is %c=チョキ \n",C);
+        on_loop=0;
+        break;
+      case P:
+        printf("Your choice is %c=パー \n",P);
+        on_loop=0;
+        break;
+      case Q://終了処理の場合
+        printf("Your choice is %c=終了 \n",Q);
+        on_loop=0;
+        break;
+    default:
+      //NG 指定した手以外の場合
+      printf("You selected an invalid key. ->%s\n", input_p);
+      printf("Please, input again.\n");
+      break;
+    }
+  }
+  return user;
+}
+unsigned char GetCpuChoiseByNum(void) //PCの手を決定する関数
+{
+  char pc_val[256];
+  unsigned char pc;
+  srand(time(NULL)); //rand初期化
+  pc = (rand() % 3) + 1;//G,C,Pの３パタン
+     //calculate cpu choice
+    memset(pc_val, '\0', sizeof(pc_val));
+    if (pc == G)
+    {
+      strcat(pc_val,"グー");
+    }
+    else if (pc == C)
+    {
+      strcat(pc_val, "チョキ");
+    }
+    else
+    {
+      strcat(pc_val, "パー");
+    }
+    printf("PC is %c:%s\n",pc, pc_val);
+  return pc;
+}
+
+//勝敗を判定する関数
+/*
+  unsigned char user: G or C or P;
+  unsigned char PC: G or C or P;
+*/
+unsigned char JudgeWinOrLose(unsigned char user, unsigned char pc)
+{
+  char win_lose_val=0;
+  if (user==pc)
+  {
+    win_lose_val=2;
+  }else if (user==G)
+  {
+    if (pc==C)
+    {
+      win_lose_val = 1;
+    }else
+    {
+      win_lose_val = 0;
+    }
+  }else if (user==C)
+  {
+    if (pc==P)
+    {
+      win_lose_val = 1;
+    }else
+    {
+      win_lose_val = 0;
+    }
+  }else
+  {
+   if (pc==G)
+   {
+     win_lose_val = 1;
+   } else
+   {
+     win_lose_val = 0;
+   }
+  }
+  return win_lose_val;
+} 
+float CalculateTheWinningPercentage(unsigned char count_win,unsigned char count_all)
+{
+  return (float)count_win/(float)count_all;
 }
