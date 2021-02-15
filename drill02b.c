@@ -17,6 +17,15 @@ PCとじゃんけん対戦するゲーム。
 #define Q 9 //終了
 #define INPUT_LENGTH 2//1文字+終端文字
 #define N_MAX 255//最大対戦回数　カウンタがunsigned charのためこれより小さい数
+#define USER_LOSE 0 //勝ち負け判定結果　負け
+#define USER_WIN 1 //勝ち負け判定結果　勝ち
+#define USER_EVEN 2 //勝ち負け判定結果　あいこ
+#define VAL_WIN1 -1 //勝ち負け判定における(ユーザーの手-PCの手)の勝ちの値１
+#define VAL_WIN2 2  //勝ち負け判定における(ユーザーの手-PCの手)の勝ちの値２
+#define VAL_LOSE1 -2 //勝ち負け判定における(ユーザーの手-PCの手)の負けの値１
+#define VAL_LOSE2 1  //勝ち負け判定における(ユーザーの手-PCの手)の負けの値２
+#define VAL_EVEN 0   //勝ち負け判定における(ユーザーの手-PCの手)のあいこの値
+
 void GetUserInput(unsigned char, char *);//標準入力から文字列を得る関数
 unsigned char GetUserChoiseByNum(unsigned char,char * );//ユーザーの入力を取得する関数
 unsigned char GetCpuChoiseByNum(void); //PCの手を決定する関数
@@ -49,7 +58,7 @@ int main(void)
 
     //ユーザーの手を取得
     user = GetUserChoiseByNum(sizeof(user_input),user_input);
-    if(user==Q||count_all==N_MAX)//終了する場合
+    if((user==Q)||(count_all==N_MAX))//終了する場合
     {
       break;
     }
@@ -167,17 +176,19 @@ unsigned char GetCpuChoiseByNum(void) //PCの手を決定する関数
   pc = (rand() % 3) + 1;//G,C,Pの３パタン
      //calculate cpu choice
     memset(pc_val, '\0', sizeof(pc_val));
-    if (pc == G)
+    switch (pc)
     {
-      strcat(pc_val,"グー");
-    }
-    else if (pc == C)
-    {
+    case G:
+      strcat(pc_val, "グー");
+      break;
+    case C:
       strcat(pc_val, "チョキ");
-    }
-    else
-    {
+      break;
+    case P:
       strcat(pc_val, "パー");
+      break;
+    default:
+      break;
     }
     printf("PC is %c:%s\n",pc, pc_val);
   return pc;
@@ -190,37 +201,22 @@ unsigned char GetCpuChoiseByNum(void) //PCの手を決定する関数
 */
 unsigned char JudgeWinOrLose(unsigned char user, unsigned char pc)
 {
-  char win_lose_val=0;
-  if (user==pc)
+  char win_lose_val=user - pc;
+  switch (win_lose_val)
   {
-    win_lose_val=2;
-  }else if (user==G)
-  {
-    if (pc==C)
-    {
-      win_lose_val = 1;
-    }else
-    {
-      win_lose_val = 0;
-    }
-  }else if (user==C)
-  {
-    if (pc==P)
-    {
-      win_lose_val = 1;
-    }else
-    {
-      win_lose_val = 0;
-    }
-  }else
-  {
-   if (pc==G)
-   {
-     win_lose_val = 1;
-   } else
-   {
-     win_lose_val = 0;
-   }
+  case VAL_EVEN://あいこの場合
+    win_lose_val = USER_EVEN;
+    break;
+  case VAL_WIN1: //勝ちの場合
+  case VAL_WIN2: //勝ちの場合
+    win_lose_val = USER_WIN;
+    break;
+  case VAL_LOSE1: //負けの場合
+  case VAL_LOSE2: //負けの場合
+    win_lose_val = USER_LOSE;
+    break;
+  default:
+    break;
   }
   return win_lose_val;
 } 

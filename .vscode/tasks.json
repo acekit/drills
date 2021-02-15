@@ -12,6 +12,7 @@
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "group": "build"
+            
         }
     ]
 }
