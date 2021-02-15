@@ -4,42 +4,41 @@
 #include <string.h>
 
 /*
-3 ƒJƒŒƒ“ƒ_[
-”NEŒ‚ğ“ü—Í‚·‚é‚ÆA
-ŒŠÔƒJƒŒƒ“ƒ_[‚ğ•\¦‚·‚é
+4
+ãƒ“ãƒƒãƒˆæ¼”ç®—
+
+2ã¤ã®æ•°å€¤x,yã‚’å…¥åŠ›ã™ã‚‹ã¨ã€
+xã®yãƒ“ãƒƒãƒˆç›®ã‚’åè»¢ã™ã‚‹ã€‚
+
 */
-//¼—ï2000”N1Œ1“úˆÈ~‚ğ‘ÎÛ‚Æ‚µ‚Ä‚¢‚Ü‚·B
+//
 
-int get_day_of_week(int ,int );
-int get_this_year_day(int,int);
-int get_this_month_day(int,int);
-int get_total_day(int ,int );
-void print_cal(int ,int );
-
+void GetUserInputByInt(int ,int );//intå‹ã§æ•°å€¤ã‚’å–å¾—ã™ã‚‹
+int InvertTheYBitOfTheX(int , int);//Xã®Yãƒ“ãƒƒãƒˆç›®ã‚’åè»¢ã•ã›ã‚‹
 
 int main( void )
 {
   int input_year,input_month;
   //input user's choice
-  printf("Please, input year and month ex.2020 2_n");
+  printf("Please, input year and month ex.2020 2ï¿½_n");
   scanf("%d", &input_year);
   scanf("%d", &input_month);
   (void)getchar();
   print_cal(input_year,input_month);
-  printf("%s_n", "Push any keys.");
+  printf("%sï¿½_n", "Push any keys.");
   (void)getchar();
   return 0;
 }
 
 void print_cal(int year ,int month)
 {
-  //ƒJƒŒƒ“ƒ_[‚Ì•\¦@Œn‚Ü‚è‚Å‚·B
+  //ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½[ï¿½Ì•\ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½nï¿½Ü‚ï¿½Å‚ï¿½ï¿½B
   int this_month=get_this_month_day(year,month);
-  //”N•\¦
-  printf("   %d ”N %d Œ_n",year,month);
-  //—j“ú•\¦
-  printf("Œ ‰Î … –Ø ‹à “y “ú_n");
-  //—j“úƒIƒtƒZƒbƒg
+  //ï¿½Nï¿½\ï¿½ï¿½
+  printf("   %d ï¿½N %d ï¿½ï¿½ï¿½_n",year,month);
+  //ï¿½jï¿½ï¿½ï¿½\ï¿½ï¿½
+  printf("ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½y ï¿½ï¿½ï¿½_n");
+  //ï¿½jï¿½ï¿½ï¿½Iï¿½tï¿½Zï¿½bï¿½g
   int offset_day=get_day_of_week(year,month);
   int cnt = 0;
   for(int i=1; i<=offset_day; i++,cnt++)
@@ -50,31 +49,31 @@ void print_cal(int year ,int month)
   {
     if(cnt % 7 == 0) 
     {
-      printf("_n");
+      printf("ï¿½_n");
     }
-    if (i > 9) //Œ…‡‚í‚¹
+    if (i > 9) //ï¿½ï¿½ï¿½ï¿½ï¿½í‚¹
     {
-      printf("%d ", i); //2Œ…
+      printf("%d ", i); //2ï¿½ï¿½
     }
     else
     {
-      printf("%d  ", i);//1Œ…
+      printf("%d  ", i);//1ï¿½ï¿½
     }
   }
-  printf("_n");
+  printf("ï¿½_n");
   return ;
 };
 int get_day_of_week(int year ,int month)
 {
-  //1“ú‚Ì—j“ú”»’è
+  //1ï¿½ï¿½ï¿½Ì—jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   int day_of_week = 0;
-  day_of_week = (get_total_day(year, month)+5) % 7; //ISO 8601‚Åu2000”N1Œ1“ú‚ğ“y—j“ú‚Æ‚·‚év‚Æ’è‹` by wikipedia
+  day_of_week = (get_total_day(year, month)+5) % 7; //ISO 8601ï¿½Åu2000ï¿½N1ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½yï¿½jï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½vï¿½Æ’ï¿½` by wikipedia
   //printf("%d", (get_total_day(year, month)));
   return day_of_week;
 };
 int get_total_day(int year,int month)
 {
-  //¼—ï2000”N1Œ1“ú‚©‚ç‚Ì—İÏ“ú”
+  //ï¿½ï¿½ï¿½ï¿½2000ï¿½N1ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì—İÏ“ï¿½ï¿½ï¿½
   int total_day = 0;
   for (size_t i = 1999; i < year-1; i++)
   {
@@ -85,7 +84,7 @@ int get_total_day(int year,int month)
 };
 int get_this_year_day(int year,int month)
 {
-  //‚PŒ•ª‚Ì“ú”
+  //ï¿½Pï¿½ï¿½ï¿½ï¿½ï¿½Ì“ï¿½ï¿½ï¿½
   int pre_month = month-1;
   int this_year_day = 0;
 
@@ -98,7 +97,7 @@ int get_this_year_day(int year,int month)
 int get_this_month_day(int year,int month)
 {
   int month_day[12]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-  //‚¤‚é‚¤”Nˆ—
+  //ï¿½ï¿½ï¿½é‚¤ï¿½Nï¿½ï¿½ï¿½ï¿½
   if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
   {
     month_day[1]=29;
