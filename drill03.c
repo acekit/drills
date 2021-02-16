@@ -3,9 +3,9 @@
 #include <time.h>
 #include <string.h>
 
-#define LEN_INPUT_YEAR 4
-#define LEN_INPUT_MONTH 2 
-
+#define LEN_INPUT_YEAR 5
+#define LEN_INPUT_MONTH 3 
+#define DECIMAL_NUMBER 10//10　strtoul()の基数に使用 
 /*
 3 カレンダー
 年・月を入力すると、
@@ -17,20 +17,21 @@ int GetDayOfTheWeek(int ,int );//曜日を取得
 int GetThisYearDays(int,int);//その年の日数を取得
 int GetThisMonthDays(int,int);//その月の日数を取得
 int GetTotalDays(int ,int );//指定した年月までの基準日からの総日数を取得
-void PrintCalendar(int ,int );//カレンダーを出力
+void PrintCalendar(int ,unsigned char );//カレンダーを出力
 void GetUserInput(unsigned char , char *);
 unsigned int GetUserInputByUnsignedInt(unsigned char);//標準入力からunsigned int型で入力値を取得する
+unsigned char GetUserInputByUnsignedChar(unsigned char);//標準入力からunsigned char型で入力値を取得する
 unsigned char FindInputErr(char);
 
 int main( void )
 {
-  unsigned int input_year[LEN_INPUT_YEAR];
-  unsigned char input_month;
+  unsigned int input_year;
+  char input_month[LEN_INPUT_MONTH];
   //input user's choice
   printf("Please, input year ex.2020\n");
-  GetUserInputByUnsignedInt(LEN_INPUT_YEAR);
+  input_year=GetUserInputByUnsignedInt(LEN_INPUT_YEAR);
   printf("Please, input month ex.02\n");
-
+  GetUserInput(sizeof(input_month),input_month);
   PrintCalendar(input_year,input_month);
   printf("%s\n", "Push any keys.");
   (void)getchar();
@@ -42,7 +43,7 @@ int main( void )
 unsigned char input_len   : 入力する文字数
          char *input_p    : 入力した値を格納する配列のポインタ
 */
-void PrintCalendar(int year ,int month)
+void PrintCalendar(int year ,unsigned char month)
 {
   //カレンダーの表示　月始まりです。
   int this_month=GetThisMonthDays(year,month);
@@ -173,8 +174,6 @@ void GetUserInput(unsigned char input_len, char *input_p)
 
 /*
 標準入力から、任意の桁数の数字をIntで取得する
-
-
 */
 unsigned int GetUserInputByUnsignedInt(unsigned char input_len)
 {
@@ -196,7 +195,7 @@ unsigned int GetUserInputByUnsignedInt(unsigned char input_len)
           }
         }  
     }
-    input_val=strtoul(input_buff,&endp);
+    input_val=strtoul(input_buff,&endp,DECIMAL_NUMBER);
     printf("input is %d \n", input_val);
     
     if ( ( strlen(endp) != 0 ) && ( *endp != '\n' ) )
@@ -210,7 +209,44 @@ unsigned int GetUserInputByUnsignedInt(unsigned char input_len)
       }
     }
   }
-  
-
+  return (unsigned int)atoi(input_buff);
+}
+/*
+標準入力から、任意の桁数の数字をcharで取得する
+*/
+unsigned char GetUserInputByUnsignedChar(unsigned char input_len)
+{
+  char input_buff[input_len]; 
+  unsigned char input_val=0;
+  unsigned char is_under_digits=1;
+  char *endp =NULL;
+  while(1){
+    fgets(input_buff,input_len,stdin);//get input number
+    if (input_buff[strlen(input_buff) -1] != '\n')
+    {
+      is_under_digits = 1;
+      while (getchar()!='\n')
+        {//'¥n'まで読み捨て
+          if (is_under_digits)
+          {
+            printf("There are too many characters to enter. Please, input again.\n");   
+            is_under_digits = 0;     
+          }
+        }  
+    }
+    input_val=(unsigned char)strtok(input_buff,&endp);
+    printf("input is %d \n", input_val);
+    
+    if ( ( strlen(endp) != 0 ) && ( *endp != '\n' ) )
+    {
+      printf("input error %c \n", *endp);      
+    }else
+    {
+      if ((is_under_digits))
+      {
+        break;
+      }
+    }
+  }
   return (unsigned int)atoi(input_buff);
 }

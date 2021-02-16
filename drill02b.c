@@ -37,7 +37,6 @@ int main(void)
   //start jangkeng
   unsigned char count_all = 0;//全対戦回数
   unsigned char count_win = 0;//全勝利数
-  unsigned char off_loop = 0;
   char user_input[INPUT_LENGTH]; //buffer user's choice ex) g,c,p or e:escape from loop
   char user_input_char=0;
   unsigned char user;
@@ -136,28 +135,28 @@ unsigned char user        : 数字に変化した後のユーザの選択
 unsigned char GetUserChoiseByNum(unsigned char input_len,char *input_p )
 {
   unsigned char user;
-  unsigned char on_loop=1;
-  while (on_loop)
+  unsigned char not_get_user_input=1;//ユーザーの入力を受け取っていないと1
+  while (not_get_user_input)
   {
     GetUserInput(input_len,input_p);
     user = (unsigned char)atoi(input_p);
     switch (user)
     {
       case G:
-        printf("Your choice is %c=グー \n",G);
-        on_loop=0;
+        printf("Your choice is %d=グー \n",G);
+        not_get_user_input=0;
         break;
       case C:
-        printf("Your choice is %c=チョキ \n",C);
-        on_loop=0;
+        printf("Your choice is %d=チョキ \n",C);
+        not_get_user_input=0;
         break;
       case P:
-        printf("Your choice is %c=パー \n",P);
-        on_loop=0;
+        printf("Your choice is %d=パー \n",P);
+        not_get_user_input=0;
         break;
       case Q://終了処理の場合
-        printf("Your choice is %c=終了 \n",Q);
-        on_loop=0;
+        printf("Your choice is %d=終了 \n",Q);
+        not_get_user_input=0;
         break;
     default:
       //NG 指定した手以外の場合
