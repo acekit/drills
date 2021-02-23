@@ -12,7 +12,6 @@ xのyビット目を反転する。
 //
 #define DECIMAL_NUMBER 10//10　strtoul()の基数に使用  
 #define LEN_INPUT_X 9//8+1文字 入力可能な整数の桁数 int でオーバーフローしないように8桁に設定
-#define LEN_INPUT_Y 2//1+1文字　入力可能な整数の桁数
 #define ON 1
 #define OFF 0
 
@@ -55,7 +54,7 @@ int main( void )
     }
   }
   printf("結果は%d\n",InvertTheYBitOfTheX(x,y));
-  printf("%s", "Push any keys.");
+  printf("%s", "Push enter keys.");
   (void)getchar();
   return 0;
 }
