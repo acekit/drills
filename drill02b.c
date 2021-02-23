@@ -200,8 +200,9 @@ unsigned char GetCpuChoiseByNum(void) //PCの手を決定する関数
 */
 unsigned char JudgeWinOrLose(unsigned char user, unsigned char pc)
 {
-  char win_lose_val=user - pc;
-  switch (win_lose_val)
+  char diff_user_pc=user - pc;//勝ち負け判定用の差分値
+  unsigned char win_lose_val;//勝ち負け判定の結果値
+  switch (diff_user_pc)
   {
   case VAL_EVEN://あいこの場合
     win_lose_val = USER_EVEN;
