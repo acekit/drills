@@ -25,20 +25,25 @@ unsigned int GetUserInputByUnsignedInt(unsigned char, unsigned char);//標準入
 
 
 //構造体の型宣言
-struct 
+struct lunch_break_information
 {
-    int no;        //番号
-    char *name;    //名前
-    int s_year;    //年
-    char s_class;  //クラス
+    char start_time_of_lunch_break[4];    //昼休み開始時間
+    char end_time_of_lunch_break[4];      //昼休み終了時間
+};
+//構造体の型宣言
+struct current_situation_based_on_the_lunch_break
+{
+    char is_lunch_or_not;        //昼休み判定結果　
+    char *comment;                  //状況説明文
+    char time_difference_from_lunch_break[4];      //昼休み基準の時間差
 };
 
 int main( void )
 {
-  unsigned int x;//入力値x
-  unsigned char digits_binary_x=0;//xのビット桁数  
-  unsigned char digits_decimal_x=0;//xの10進数の桁数  
-  unsigned char len_input_y=0;//yの入力時の文字数
+    struct lunch_break_information lbi[1]=
+    {
+        {"1245","1330"}
+    };
   //input user's choice
   printf("Please enter the date and time in the format DDHHmm. ex.050530 = 5th,05:30\n");
   x=GetUserInputByUnsignedInt(LEN_INPUT,ON); 
