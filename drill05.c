@@ -6,7 +6,7 @@
 /*
 5
 昼休み判定
-日時を入力すると、                  :DDHHmmの形式で入力
+時間を入力すると、                  :HHmmの形式で入力
 昼休みであるかを判定する。  　        :昼休み中　or 昼休み外　と表示
 昼休み前であれば　昼休みまでの時間      :昼休みまでHHmm　と表示
 昼休み中であれば　昼休み終了までの時間   :昼休み終了までHHmm　と表示
@@ -22,6 +22,16 @@
 #define OFF 0
 
 unsigned int GetUserInputByUnsignedInt(unsigned char, unsigned char);//標準入力からunsigned int型で入力値を取得する
+
+
+//構造体の型宣言
+struct 
+{
+    int no;        //番号
+    char *name;    //名前
+    int s_year;    //年
+    char s_class;  //クラス
+};
 
 int main( void )
 {
