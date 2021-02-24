@@ -84,7 +84,7 @@ unsigned int GetUserInputByUnsignedInt(unsigned char input_len,unsigned char fix
             is_over_digits = 0;     
           }
         }  
-    }else if (fix_number_of_digits==1)
+    }else if (fix_number_of_digits==1)//文字数を固定した場合の判定
     {
       is_correct_number_of_digits = 0;
     }
