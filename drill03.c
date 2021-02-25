@@ -106,7 +106,7 @@ void PrintCalendar(unsigned int year ,unsigned char month)
   }
   printf("\n");
   return ;
-};
+}
 
 /*
 指定された年・月からその月の１日における曜日を判定する
@@ -119,7 +119,7 @@ unsigned char GetDayOfTheWeek(unsigned int year ,unsigned char month)
   unsigned char day_of_week = 0;
   day_of_week = (GetTotalDaysFromSpecifiedMonth(year, month)+NUMBER_AS_SATURDAY) % NUMBER_OF_ONE_WEEK; 
   return day_of_week;
-};
+}
 
 /*
 基準日から指定された年・月までの総日数を取得する
@@ -140,7 +140,7 @@ unsigned int GetTotalDaysFromSpecifiedMonth(unsigned int year,unsigned char mont
   unsigned char input_month= month-CORRECTION_VALUE_FOR_ONE_MONTH;
   total_day += GetTheNumberOfDaysInThisYear(year,input_month);
   return total_day;
-};
+}
 
 /*
 指定された年における、1月から指定した月の月末までの総日数を取得する
@@ -156,7 +156,7 @@ unsigned int GetTheNumberOfDaysInThisYear(unsigned int year,unsigned char month)
    this_year_day+=GetTheNumberOfDaysInThisMonth(year,i); 
   }
   return this_year_day;
-};
+}
 
 /*
 指定された年における、指定した月の一ヶ月の日数を取得する

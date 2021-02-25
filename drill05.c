@@ -101,9 +101,3 @@ unsigned int GetUserInputByUnsignedInt(unsigned char input_len,unsigned char fix
   return input_val;
 }
 
-/*@brief xのyビット目を反転させる演算     */
-/*@param [in] int x 元の数    */
-/*@param [in] int y 反転させるビット位置    */
-/*@return result 演算後の値     */
-
-

@@ -115,7 +115,7 @@ unsigned int GetUserInputByUnsignedInt(unsigned char input_len,unsigned char fix
 int InvertTheYBitOfTheX(int x , int y)//XのYビット目を反転させる
 {
   int result;
-  int x_invert_buff=(int)pow(2,(y-1));//yビット目が1の数を作成
+  int x_invert_buff = 1 << (y-1) ;//yビット目が1の数を作成
   result = x ^ x_invert_buff;
   return result;
 }
