@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-
+#include <time.h>
+//#include <math.h>
+//入力地に関する「あきらかなエラー」という定義がかなり難しいため。全てに対処は致しません。
+//今回は、後の処理にで想定した入力値以外をエラーとみなしますが、単純にscanfで実装すると、対処仕切れない入力パタンが残ります。
 /*
 5
 昼休み判定
@@ -12,92 +14,90 @@
 昼休み中であれば　昼休み終了までの時間   :昼休み終了までHHmm　と表示
 昼休み後であれば　昼休み終了から経過した時間:昼休み終了からHHmm　と表示
 を表示する。
-構造体を利用して実装すること        :昼休み関連情報を構造体として作成
+構造体を利用して実装すること        :time.h のtm構造体を使用
+時分を分のみに変換する関数を自作
+分を時分に変換する関数を自作
 */
-
 //
 #define DECIMAL_NUMBER 10//10　strtoul()の基数に使用  
-#define LEN_INPUT 7//6+1文字 入力可能な整数の桁数 DDHHmmなので6文字
+#define LEN_INPUT 2//6+1文字 入力可能な整数の桁数 DDHHmmなので6文字
 #define ON 1
 #define OFF 0
-
-unsigned int GetUserInputByUnsignedInt(unsigned char, unsigned char);//標準入力からunsigned int型で入力値を取得する
-
-
-//構造体の型宣言
-struct lunch_break_information
-{
-    char start_time_of_lunch_break[4];    //昼休み開始時間
-    char end_time_of_lunch_break[4];      //昼休み終了時間
-};
-//構造体の型宣言
-struct current_situation_based_on_the_lunch_break
-{
-    char is_lunch_or_not;        //昼休み判定結果　
-    char *comment;                  //状況説明文
-    char time_difference_from_lunch_break[4];      //昼休み基準の時間差
-};
+#define AN_HOUR_EXPRESSED_IN_MINUTES 60 //１時間は60分
+#define LUNCH_BREAK_START_TIME_HOUR 12//昼休み開始[時]
+#define LUNCH_BREAK_START_TIME_MINUTES 45//昼休み開始[分]
+#define LUNCH_BREAK_END_TIME_HOUR 13//昼休み終了[時]
+#define LUNCH_BREAK_END_TIME_MINUTES 30//昼休み終了[分]
+unsigned int ConvertTimeToMinutesOnly(struct tm);//時刻を分に変換する
+struct tm ConvertMinutesOnlyToTime(unsigned int);//分をtmに時と分で格納する
 
 int main( void )
 {
-    struct lunch_break_information lbi[1]=
+    //time.h のtm構造体を使用
+    struct tm start_time;
+    struct tm end_time;
+    struct tm input_time;
+    struct tm print_time;
+    char s[LEN_INPUT];//入力用のバッファ
+    start_time.tm_hour=LUNCH_BREAK_START_TIME_HOUR;
+    start_time.tm_min=LUNCH_BREAK_START_TIME_MINUTES;
+    end_time.tm_hour=LUNCH_BREAK_END_TIME_HOUR;
+    end_time.tm_min=LUNCH_BREAK_END_TIME_MINUTES;
+    
+    //時刻を指定する
+    printf("Please enter the date and time in the format HH. ex.14 = 14:xx\n");
+    scanf("%2s%*[^\n]",s);//ここは、セキュリティ面とscanfの関係から、マジックナンバーですが、2を直入れしています。
+    while (getchar()!='\n');//改行コードの読み飛ばし
+    input_time.tm_hour=atoi(s);
+    printf("Please enter the date and time in the format MM. ex.30 = xx:30\n");
+    scanf("%2s%*[^\n]",s);//ここは、セキュリティ面とscanfの関係から、マジックナンバーですが、2を直入れしています。
+    while (getchar()!='\n');//改行コードの読み飛ばし
+    input_time.tm_min=atoi(s);
+    if (((input_time.tm_hour<=0)||(input_time.tm_hour>24))||((input_time.tm_min<=0)||(input_time.tm_min>59)))
     {
-        {"1245","1330"}
-    };
-  //input user's choice
-  printf("Please enter the date and time in the format DDHHmm. ex.050530 = 5th,05:30\n");
-  x=GetUserInputByUnsignedInt(LEN_INPUT,ON); 
-  printf("%s", "Push enter keys.");
-  (void)getchar();
-  return 0;
+        printf("Input value is invalid.Exit the program.");
+    }else
+    {
+        //昼休みか否かを判定する
+        // ①昼休みより前か否かを判定する
+        // ②昼休みより後か否かを判定する
+        // ①でも②でもないと昼休みである。
+        if (ConvertTimeToMinutesOnly(input_time)<ConvertTimeToMinutesOnly(start_time))//①
+        {
+            print_time=ConvertMinutesOnlyToTime(ConvertTimeToMinutesOnly(start_time)-ConvertTimeToMinutesOnly(input_time));
+            printf("It is now before lunch break. The lunch break will start in %2d [hour] %2d [min].\n",print_time.tm_hour,print_time.tm_min);
+        }else if (ConvertTimeToMinutesOnly(input_time)>ConvertTimeToMinutesOnly(end_time))//②
+        {
+            print_time=ConvertMinutesOnlyToTime(ConvertTimeToMinutesOnly(input_time)-ConvertTimeToMinutesOnly(end_time));
+            printf("It is now after lunch break.  %2d [hour] and %2d [min] have passed since the lunch break.\n",print_time.tm_hour,print_time.tm_min);        
+        }else
+        {
+            print_time=ConvertMinutesOnlyToTime(ConvertTimeToMinutesOnly(end_time)-ConvertTimeToMinutesOnly(input_time));
+            printf("It is now lunch time. The lunch break will end in %2d [hour] %2d [min].\n",print_time.tm_hour,print_time.tm_min);                
+        }
+    }
+    printf("%s", "Push enter keys.");
+    getchar();//画面を残す用
+    return 0;
 }
 
-/*@brief 標準入力から、任意の桁数の数字をunsigned Intで取得する     */
-/*@param [in] unsigned char input_len 入力する数字の文字数    */
-/*@param [in] unsigned char fix_number_of_digits 入力する文字数を固定するか否か 1で指定文字数のみ可とし、0で指定文字未満でも可とする    */
-/*@return unsigned int input_val 入力された数値        */
-unsigned int GetUserInputByUnsignedInt(unsigned char input_len,unsigned char fix_number_of_digits)
-{
-  char input_buff[input_len]; //標準入力から取得するためのバッファ
-  unsigned int input_val=0; //取得した文字列を数字化した値
-  unsigned char is_over_digits=0;//桁数判定用　桁数が溢れていると１
-  unsigned char is_correct_number_of_digits=0;//正しい桁数の以上の入力値が得られたら　１
-  char *endp =NULL;
-  while(1){//条件を満たすまでループ
-    fgets(input_buff,input_len,stdin);//get input number
-    if (input_buff[strlen(input_buff) -1] != '\n')
-    {
-      is_over_digits = 1;//入力文字数が規定値を超えている
-      is_correct_number_of_digits=1;//必要桁数に足りている
-      while (getchar()!='\n')
-        {//'¥n'まで読み捨て
-          if (is_over_digits)//桁溢れしているか　溢れている場合、溢れた分を削除する
-          {
-            printf("There are too many characters to enter.Overflowing characters are thrown away.\n");   
-            is_over_digits = 0;     
-          }
-        }  
-    }else if (fix_number_of_digits==1)
-    {
-      is_correct_number_of_digits = 0;
-    }
-    input_val=strtoul(input_buff,&endp,DECIMAL_NUMBER);
-    printf("input is %d \n", input_val);
-    
-    if ( ( strlen(endp) != 0 ) && ( *endp != '\n' ) )
-    {
-      printf("input error %c \n", *endp);            
-    }else
-    { 
-      if ((fix_number_of_digits==0)||(is_correct_number_of_digits==1))
-      {
-        break;        
-      }else
-      {
-        printf("You have entered too few characters. Please, Input again.\n");   
-      }
-    }
-  }
-  return input_val;
+
+/*@brief HH時MM分の時刻情報を格納したtm構造体を、分のみで表した形式に変換する。例：01時00分 => 60     */
+/*@param [in] struct tm input_time 変換元の時間    */
+/*@return unsigned int minutes 返還後の分        */
+unsigned int ConvertTimeToMinutesOnly(struct tm input_time){
+    unsigned int minutes;
+    minutes=input_time.tm_hour*AN_HOUR_EXPRESSED_IN_MINUTES+input_time.tm_min;//1時間は60分
+    return minutes;
+}
+
+/*@brief 分のみで表された時刻情報を、X時Y分の形式でtm構造体に格納する。例： 90 => tm_hour=1  tm_min=30    */
+/*@param [in] unsigned int minutes 変換元の分    */
+/*@return struct tm converted_time 返還後の時間情報         */
+struct tm ConvertMinutesOnlyToTime(unsigned int minutes){
+    struct tm converted_time;
+    converted_time.tm_hour=(unsigned char)(minutes/AN_HOUR_EXPRESSED_IN_MINUTES);//1時間は60分
+    converted_time.tm_min=(unsigned char)(minutes%AN_HOUR_EXPRESSED_IN_MINUTES);//60分で割ったあまりが表示分
+    return converted_time;
 }
 
