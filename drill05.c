@@ -28,7 +28,7 @@
 #define LUNCH_BREAK_END_TIME_HOUR 13//昼休み終了[時]
 #define LUNCH_BREAK_END_TIME_MINUTES 30//昼休み終了[分]
 unsigned int GetSerialMinutes(struct tm);//時刻を分に変換する
-struct tm ConvertSerialMinutesToTime(unsigned int);//分をtmに時と分で格納する
+struct tm GetTimeFromSerialMinutes(unsigned int);//分をtmに時と分で格納する
 
 int main( void )
 {
@@ -69,15 +69,15 @@ int main( void )
         end_time_serial_minutes = GetSerialMinutes(end_time);
         if (input_time_serial_minutes < start_time_serial_minutes)//①
         {
-            print_time = ConvertSerialMinutesToTime(start_time_serial_minutes - input_time_serial_minutes);
+            print_time = GetTimeFromSerialMinutes(start_time_serial_minutes - input_time_serial_minutes);
             printf("It is now before lunch break. The lunch break will start in %2d [hour] %2d [min].\n",print_time.tm_hour,print_time.tm_min);
         }else if (input_time_serial_minutes > end_time_serial_minutes)//②
         {
-            print_time = ConvertSerialMinutesToTime(input_time_serial_minutes - end_time_serial_minutes);
+            print_time = GetTimeFromSerialMinutes(input_time_serial_minutes - end_time_serial_minutes);
             printf("It is now after lunch break.  %2d [hour] and %2d [min] have passed since the lunch break.\n",print_time.tm_hour,print_time.tm_min);        
         }else
         {
-            print_time = ConvertSerialMinutesToTime(end_time_serial_minutes - input_time_serial_minutes);
+            print_time = GetTimeFromSerialMinutes(end_time_serial_minutes - input_time_serial_minutes);
             printf("It is now lunch time. The lunch break will end in %2d [hour] %2d [min].\n" , print_time.tm_hour , print_time.tm_min);                
         }
     }
@@ -99,7 +99,7 @@ unsigned int GetSerialMinutes(struct tm input_time){
 /*@brief 分のみで表された時刻情報を、X時Y分の形式でtm構造体に格納する。例： 90 => tm_hour=1  tm_min=30    */
 /*@param [in] unsigned int minutes 変換元の分    */
 /*@return struct tm converted_time 変換後の時間情報         */
-struct tm ConvertSerialMinutesToTime(unsigned int minutes){
+struct tm GetTimeFromSerialMinutes(unsigned int minutes){
     struct tm converted_time;
     converted_time.tm_hour = (unsigned char)(minutes / 60);//1時間は60分
     converted_time.tm_min = (unsigned char)(minutes % 60);//60分で割ったあまりが表示分
