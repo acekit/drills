@@ -12,30 +12,22 @@ PCがランダムに数値(1〜100)を決め、※入力値は整数としまし
 人間が入力した数値と
 同じであれば正解であることを表示、
 異なれば数値の大小を表示する。
-
-〜※蛇足ですので、レビュー後に消します。
-課題文は上の通りでしたが、ゲームとしては
-「入力値が正解より大きいか小さいかをヒントに正解に辿り着く」
-というものかと思い、そのように実装いたしました。〜※
-
 */
 //
 #define LEN_INPUT 3//3文字 入力可能な整数の桁数 1~100 なので3文字
 #define MAX_VAL 100//数値範囲の最大値　100
 #define MIN_VAL 1//数値範囲の最小値　1
-#define ON 1 
 
 unsigned char GetRandomNumberInSpecifiedRange(unsigned char , unsigned char);
 
 int main( void )
 {
-    //time.h のtm構造体を使用
     char s[LEN_INPUT];//入力用のバッファ
     unsigned char user_val=0;//ユーザーの入力値
     unsigned char pc_val=0;//PCの指定値
     pc_val = GetRandomNumberInSpecifiedRange(MAX_VAL,MIN_VAL);
 
-    while (ON)
+    while (1)
     {
         //ユーザーの数値を指定する
         printf("Guess the number chosen by the PC.\nPlease enter a single integer value between 1 and 100.\n");
@@ -79,11 +71,11 @@ int main( void )
 /*@return unsigned char x ランダムな数        */
 unsigned char GetRandomNumberInSpecifiedRange(unsigned char max_val , unsigned char min_val)
 {
-  unsigned char x;//出力値
-  unsigned char number_of_value_ranges;//[値の範囲の個数]は、最大値ー最小値＋１となる。
-  number_of_value_ranges = (max_val - min_val + 1);
-  srand(time(NULL)); //rand初期化
-  //[値の範囲の個数]で割った余りは[値の範囲の個数]だけ存在する。また、あまりは0~max_val-1となるため、min_valを足す。
-  x = (rand() % number_of_value_ranges) + min_val;  
-  return x;
+    unsigned char x;//出力値
+    unsigned char number_of_value_ranges;//[値の範囲の個数]は、最大値ー最小値＋１となる。
+    number_of_value_ranges = (max_val - min_val + 1);
+    srand(time(NULL)); //rand初期化
+    //[値の範囲の個数]で割った余りは[値の範囲の個数]だけ存在する。また、あまりは0~max_val-1となるため、min_valを足す。
+    x = (rand() % number_of_value_ranges) + min_val;  
+    return x;
 }
