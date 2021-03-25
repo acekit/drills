@@ -1,79 +1,55 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-//#include <math.h>
-//å…¥åŠ›å€¤ã«é–¢ã™ã‚‹ã€Œã‚ãã‚‰ã‹ãªã‚¨ãƒ©ãƒ¼ã€ã¨ã„ã†å®šç¾©ãŒã‹ãªã‚Šé›£ã—ã„ãŸã‚ã€‚å…¨ã¦ã«å¯¾å‡¦ã¯è‡´ã—ã¾ã›ã‚“ã€‚
-//ä»Šå›ã¯ã€å¾Œã®å‡¦ç†ã«ã§æƒ³å®šã—ãŸå…¥åŠ›å€¤ä»¥å¤–ã‚’ã‚¨ãƒ©ãƒ¼ã¨ã¿ãªã—ã¾ã™ãŒã€å˜ç´”ã«scanfã§å®Ÿè£…ã™ã‚‹ã¨ã€å¯¾å‡¦ä»•åˆ‡ã‚Œãªã„å…¥åŠ›ãƒ‘ã‚¿ãƒ³ãŒæ®‹ã‚Šã¾ã™ã€‚
+//“ü—Í’l‚ÉŠÖ‚·‚éu‚ ‚«‚ç‚©‚ÈƒGƒ‰[v‚Æ‚¢‚¤’è‹`‚ª‚©‚È‚è“ï‚µ‚¢‚½‚ßB‘S‚Ä‚É‘Îˆ‚Í’v‚µ‚Ü‚¹‚ñB
+//¡‰ñ‚ÍAŒã‚Ìˆ—‚É‚Å‘z’è‚µ‚½“ü—Í’lˆÈŠO‚ğƒGƒ‰[‚Æ‚İ‚È‚µ‚Ü‚·‚ªA’Pƒ‚Éscanf‚ÅÀ‘•‚·‚é‚ÆA‘ÎˆdØ‚ê‚È‚¢“ü—Íƒpƒ^ƒ“‚ªc‚è‚Ü‚·B
 /*
-7
-äººç”Ÿã‚²ãƒ¼ãƒ 
-èª•ç”Ÿæ—¥ã‚’å…¥åŠ›ã™ã‚‹ã¨ã€
-èª•ç”Ÿæ—¥ãŒä½•æ›œæ—¥ã‹ã€
-ç”Ÿã¾ã‚Œã¦ã‹ã‚‰ä½•æ—¥çµŒéã—ãŸã‹ã‚’
-è¡¨ç¤ºã™ã‚‹
-
-èª•ç”Ÿæ—¥ã®ç¯„å›²ã¯ã€1900å¹´ä»¥é™ã¨ã™ã‚‹ã€‚
-ï¼ˆãƒ¦ãƒ¼ã‚¶ã®èª•ç”Ÿæ—¥ã‚’å…¥åŠ›ã™ã‚‹ã¨è§£é‡ˆã—ã€2021/03/09ç¾åœ¨ã€ä¸–ç•Œæœ€é«˜é½¢ã¯118æ­³ã§ã‚ã‚‹ã“ã¨ã‹ã‚‰å•é¡Œãªã—ï¼‰
-ï¼‘èª•ç”Ÿæ—¥ã‚’ãƒ¦ãƒ¼ã‚¶ãŒå…¥åŠ›ã™ã‚‹é–¢æ•°
-    8æ–‡å­—ã§å…¥åŠ›
-    4,2,2ã«åŒºåˆ‡ã‚‹
-    å¹´æœˆæ—¥ã«ã‚¨ãƒ©ãƒ¼ãŒãªã„ã‹ç¢ºèªã™ã‚‹
-    ãã‚Œãã‚Œã‚’tm_year,tm_mon,tm_mdayã«æ ¼ç´
-2èª•ç”Ÿæ—¥ãŒä½•æ›œã‹ã‚’åˆ¤å®šã™ã‚‹é–¢æ•°
-    tmæ§‹é€ ä½“ã‹ã‚‰ã€æ›œæ—¥ã‚’åˆ¤å®šã™ã‚‹
-3èª•ç”Ÿæ—¥ã‹ã‚‰ä»Šæ—¥ã¾ã§ãŒä½•æ—¥é–“ã‹è¨ˆç®—ã™ã‚‹é–¢æ•°
-    å…¥åŠ›ã—ãŸæ™‚åˆ»ç¾åœ¨ã®tmæ§‹é€ ä½“ã‚’å¾—ã‚‹ã€‚
-    èª•ç”Ÿæ—¥ã¨ã®å·®åˆ†(difftime)ã‹ã‚‰ã€çµŒéæ—¥æ•°ã‚’å–å¾—ã™ã‚‹ã€‚
-4æ›œæ—¥ã‚’è¡¨ç¤ºã™ã‚‹é–¢æ•°
-    æ›œæ—¥ã‚’è¡¨ç¤º
-5çµŒéæ—¥æ•°ã‚’è¡¨ç¤ºã™ã‚‹é–¢æ•°
-    çµŒéæ™‚é–“ã‚’è¡¨ç¤º
+7l¶ƒQ[ƒ€
+’a¶“ú‚ğ“ü—Í‚·‚é‚ÆA
+’a¶“ú‚ª‰½—j“ú‚©A
+¶‚Ü‚ê‚Ä‚©‚ç‰½“úŒo‰ß‚µ‚½‚©‚ğ
+•\¦‚·‚é
+¦’a¶“ú‚Ì”ÍˆÍ‚ÍA1900”NˆÈ~‚Æ‚·‚éB
+iƒ†[ƒU‚Ì’a¶“ú‚ğ“ü—Í‚·‚é‚Æ‰ğß‚µA2021/03/09Œ»İA¢ŠEÅ‚—î‚Í118Î‚Å‚ ‚é‚±‚Æ‚©‚ç–â‘è‚È‚µj
 */
+#include <errno.h>
+#include <stdio.h> // “üo—Í—p
+#include <string.h> // “ü—Í‚Ì•¶š—ñË”’l•ÏŠ·—p
+#include <time.h>   //“ú‚Ìæ“¾EŒvZ—p
 
-//æ•°å€¤å®šç¾©
-#define LEN_INPUT 9//8æ–‡å­—+1 å…¥åŠ›å¯èƒ½ãªæ•´æ•°ã®æ¡æ•° yyyymmdd ãªã®ã§8æ–‡å­— + çµ‚ç«¯1æ–‡å­—
-#define REFERENCE_YEAR 1900 //æ›œæ—¥ã®åŸºæº–ã¨ã™ã‚‹å¹´ï¼ˆ1900å¹´ï¼‰
+//”’l’è‹` =====================
+#define LEN_INPUT 9//8•¶š+1 “ü—Í‰Â”\‚È®”‚ÌŒ…” yyyymmdd ‚È‚Ì‚Å8•¶š + I’[1•¶š
+#define REFERENCE_YEAR 1900 //—j“ú‚ÌŠî€‚Æ‚·‚é”Ni1900”N tm\‘¢‘Ì‚Ìtm_year‚Ìd—l‚æ‚èj
+#define TRUE    1
+#define FALSE   0
 
-typedef enum{ //ã‚¨ãƒ©ãƒ¼åˆ¤å®š
-        ERROR,
-        SUCCESS
-} enum_status;
+// ŠÖ”éŒ¾ =====================
+unsigned char GetUserBirthday(struct tm *); 
+unsigned char GetUserInputString(char *, unsigned int);
+unsigned char GetTmStructureFromYearMonthDay(char* , struct tm*);
+unsigned char GetDaysInThisMonth(unsigned int, unsigned char, unsigned char*);
+unsigned char InitTmStructure(struct tm *, int , int , int);
+unsigned char GetDaysFromJanFirst(unsigned int , unsigned char , unsigned int *);
+unsigned char GetSerialDays(struct tm *, unsigned int *);
+unsigned char GetDayOfWeek(struct tm *);
+unsigned char GetDaysElapsed(struct tm, struct tm, double *);
+unsigned char PrintfDayOfTheWeek(unsigned char);
+void          PrintfDaysElapsed(int);
 
-//ï¼‘èª•ç”Ÿæ—¥ã‚’ãƒ¦ãƒ¼ã‚¶ãŒå…¥åŠ›ã™ã‚‹
-enum_status GetUserBirthday(struct tm*);//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®èª•ç”Ÿæ—¥ã‚’å¾—ã‚‹
-enum_status GetUserInputString(char *);//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®å…¥åŠ›ã‚’æ–‡å­—åˆ—ã§å¾—ã‚‹
-enum_status GetTmStructureFromYearMonthDay(char* , struct tm*);//yyyymmddå½¢å¼ã®æ—¥ä»˜ã‹ã‚‰tmæ§‹é€ ä½“ã‚’å¾—ã‚‹
-unsigned char GetTheNumberOfDaysInThisMonth(unsigned int,unsigned char);//ãã®æœˆã®æ—¥æ•°ã‚’å–å¾—
-
-//2èª•ç”Ÿæ—¥ãŒä½•æ›œã‹ã‚’åˆ¤å®šã™ã‚‹
-enum_status GetDayOfWeek(struct tm * );//tmæ§‹é€ ä½“ã®æ›œæ—¥ã‚’æ—¥ä»˜ã‹ã‚‰å†å–å¾—ã™ã‚‹é–¢æ•°
-
-//3èª•ç”Ÿæ—¥ã‹ã‚‰ä»Šæ—¥ã¾ã§ãŒä½•æ—¥é–“ã‹è¨ˆç®—ã™ã‚‹
-float GetTheNumberOfDaysElapsed(struct tm  , struct tm  );//çµŒéæ—¥æ•°ã‚’æ±‚ã‚ã‚‹é–¢æ•°
-
-//4æ›œæ—¥ã‚’è¡¨ç¤ºã™ã‚‹
-void PrintfDayOfTheWeek(unsigned char);//æ›œæ—¥ã‚’printfã™ã‚‹é–¢æ•°
-
-//5çµŒéæ—¥æ•°ã‚’è¡¨ç¤ºã™ã‚‹
-void PrintfTheNumberOfDaysElapsed(int);//çµŒéæ—¥æ•°ã‚’printfã™ã‚‹é–¢æ•°
-
+// ŠÖ”’è‹` ====================
+// ƒƒCƒ“
 int main( void )
 {
     struct tm today;
     struct tm user_birthday;
-    enum_status is_function_status = SUCCESS;//ã‚¨ãƒ©ãƒ¼åˆ¤å®šç”¨ãƒ•ãƒ©ã‚°
-    time_t current = time( NULL );//currentã«ä»Šæ—¥ã®æ™‚é–“æƒ…å ±ã‚’æ ¼ç´
-    char s[LEN_INPUT];//å…¥åŠ›ç”¨ã®ãƒãƒƒãƒ•ã‚¡
-    float days_elapsed;//çµŒéæ—¥æ•°
-    today = *localtime( &current );//ä»Šæ—¥ã®æ—¥ä»˜ã‚’tmæ§‹é€ ä½“ã«æ ¼ç´
+    unsigned char birthday_mday;    // ’a¶“ú‚Ì—j“ú[0~6](“ú~“y)
+    unsigned char is_function_succeeded = TRUE; // ƒGƒ‰[”»’è—pƒtƒ‰ƒO
+    time_t current = time( NULL );  // current‚É¡“ú‚ÌŠÔî•ñ‚ğŠi”[
+    double days_elapsed;            // Œo‰ß“ú”
+    today = *localtime( &current ); // ¡“ú‚Ì“ú•t‚ğtm\‘¢‘Ì‚ÉŠi”[
 
-    //èª•ç”Ÿæ—¥ã‚’ãƒ¦ãƒ¼ã‚¶ãŒå…¥åŠ›ã™ã‚‹
+    //’a¶“ú‚ğƒ†[ƒU‚ª“ü—Í‚·‚é----------
     while (1)
     {
-        is_function_status = GetUserBirthday( &user_birthday );
-        printf( "debug\n" );
-        if ( is_function_status == SUCCESS )
+        is_function_succeeded = GetUserBirthday( &user_birthday );
+        if ( is_function_succeeded == TRUE )
         {
             break;          
         }else
@@ -82,162 +58,324 @@ int main( void )
         }
     }
 
-    //æ›œæ—¥ã‚’å–å¾—ã™ã‚‹
-    is_function_status = GetDayOfWeek( &user_birthday );
+    //—j“ú‚ğæ“¾‚·‚é----------
+    is_function_succeeded = GetDayOfWeek( &user_birthday);
+    if ( is_function_succeeded == FALSE )
+    {
+        printf("There is an error in the function that finds GetDayOfWeek function.\n");
+        getchar(); //‰æ–Ê‚ğc‚·—p
+        return 0;
+    }
 
-    //çµŒéæ—¥æ•°ã‚’å–å¾—
-    days_elapsed = GetTheNumberOfDaysElapsed( user_birthday, today );  
+    //Œo‰ß“ú”‚ğæ“¾----------
+    GetDaysElapsed(user_birthday, today, &days_elapsed);
 
-    //çµæœã‚’å‡ºåŠ›ã™ã‚‹
-    if ( days_elapsed < 0 )//å…¥åŠ›å€¤ãŒä»Šæ—¥ã‚ˆã‚Šã‚‚æœªæ¥ã ã¨ã‚¨ãƒ©ãƒ¼
+    //Œ‹‰Ê‚ğo—Í‚·‚é----------
+    if ( days_elapsed < 0 )//“ü—Í’l‚ª¡“ú‚æ‚è‚à–¢—ˆ‚¾‚ÆƒGƒ‰[
     {
         printf( "Input value error. The birthday you entered is in the future.\n" );
     }else
     {
-        PrintfDayOfTheWeek( user_birthday.tm_wday );//æ›œæ—¥ã‚’è¡¨ç¤º
-        PrintfTheNumberOfDaysElapsed( (int)days_elapsed ) ;//çµŒéæ—¥æ•°ã‚’è¡¨ç¤º
+        PrintfDayOfTheWeek( user_birthday.tm_wday );//—j“ú‚ğ•\¦
+        PrintfDaysElapsed( (int)days_elapsed ) ;//Œo‰ß“ú”‚ğ•\¦
     }
-    printf( "%s", "Push enter keys." );
-    getchar();//ç”»é¢ã‚’æ®‹ã™ç”¨
+
+    printf( "Push enter keys." );
+    getchar();//‰æ–Ê‚ğc‚·—p
+
     return 0;
 }
 
-/*@brief ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®èª•ç”Ÿæ—¥ã‚’å¾—ã‚‹é–¢æ•°*/
+
+/*@brief ƒ†[ƒU[‚Ì’a¶“ú‚ğ“¾‚éŠÖ”*/
 /*@param [in] struct tm birthday    */
-/*@param [in] unsigned char min_val æœ€å°å€¤    */
-/*@return enum_status status         */
-enum_status GetUserBirthday(struct tm *birthday)
+/*@param [in] unsigned char min_val Å¬’l    */
+/*@return unsigned char status         */
+unsigned char GetUserBirthday(struct tm *birthday)
 {
-    //1.ã¾ãšã¯æ–‡å­—åˆ—ã¨ã—ã¦å—ã‘å–ã‚‹
-    enum_status status = SUCCESS ;//å‡¦ç†ã®æˆå¦
-    char s[LEN_INPUT];//å…¥åŠ›ç”¨ã®ãƒãƒƒãƒ•ã‚¡
-    printf( "Please enter your birthday in the format yyyymmdd. ex:1999å¹´10æœˆ10æ—¥=> 19991010\n") ;
-    //scanfã ã¨ã€æ¡æº¢ã‚Œã«å¯¾ã—ã¦å¯¾å‡¦ã—ãã‚Œãªã„ãŸã‚æ³¨æ„ã¨ã—ã¦è¡¨ç¤ºã€‚ä¾‹ï¼š1000ã®ã¨ãã¯100ãŒå…¥åŠ›ã•ã‚Œã¦ã—ã¾ã†ã€‚
-    status = GetUserInputString( s );
+    //1.‚Ü‚¸‚Í•¶š—ñ‚Æ‚µ‚Äó‚¯æ‚é
+    unsigned char status = FALSE; //ˆ—‚Ì¬”Û
+    char s[LEN_INPUT];//“ü—Í—p‚Ìƒoƒbƒtƒ@
+    printf( "Please enter your birthday in the format yyyymmdd. ex:1999”N10Œ10“ú=> 19991010\n") ;
+    status = GetUserInputString(s, LEN_INPUT - 1); // I’[•¶š—p‚Ì1Œ…‚ğˆø‚­
+    if ( status == FALSE )
+    {
+        printf("Error at function GetUserInputString()\n");
+        return status;
+    }    
     status = GetTmStructureFromYearMonthDay( s , birthday );
     return status;
 }
 
-/*@brief ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®å…¥åŠ›ã‚’æ–‡å­—åˆ—ã§å¾—ã‚‹é–¢æ•°*/
-/*@param [in] char *s å…¥åŠ›ç”¨ãƒãƒƒãƒ•ã‚¡   */
+/*@brief ƒ†[ƒU[‚Ì“ü—Í‚ğ•¶š—ñ‚Å“¾‚éŠÖ”*/
+/*@param [in] char *s “ü—Í—pƒoƒbƒtƒ@   */
 /*@return char         */
-enum_status GetUserInputString(char *s)//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®å…¥åŠ›ã‚’æ–‡å­—åˆ—ã§å¾—ã‚‹
+unsigned char GetUserInputString(char *s , unsigned int s_len)// ƒ†[ƒU[‚Ì“ü—Í‚ğ•¶š—ñ‚Å“¾‚é
 {
-    //1.ã¾ãšã¯æ–‡å­—åˆ—ã¨ã—ã¦å—ã‘å–ã‚‹
-    enum_status status = SUCCESS ;//å‡¦ç†ã®æˆå¦
-    unsigned char s_len =sizeof( s ); //å…¥åŠ›æ–‡å­—æ•°
-    //scanfã ã¨ã€æ¡æº¢ã‚Œã«å¯¾ã—ã¦å¯¾å‡¦ã—ãã‚Œãªã„ãŸã‚æ³¨æ„ã¨ã—ã¦è¡¨ç¤ºã€‚ä¾‹ï¼š1000ã®ã¨ãã¯100ãŒå…¥åŠ›ã•ã‚Œã¦ã—ã¾ã†ã€‚
-    printf( "If you enter a number greater than %d digits, it will be recognized as a %d-digit number from the beginning.\n", s_len,s_len );
-    scanf( "%8s%*[^\n]" , s );//ã“ã“ã¯ã€ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£é¢ã¨scanfã®é–¢ä¿‚ã‹ã‚‰ã€ãƒã‚¸ãƒƒã‚¯ãƒŠãƒ³ãƒãƒ¼ã§ã™ãŒã€8ã‚’ç›´å…¥ã‚Œã—ã¦ã„ã¾ã™ã€‚
-    while ( getchar() != '\n' );//æ”¹è¡Œã‚³ãƒ¼ãƒ‰ã®èª­ã¿é£›ã°ã—
+    //1.‚Ü‚¸‚Í•¶š—ñ‚Æ‚µ‚Äó‚¯æ‚é
+    unsigned char status = FALSE ;//ˆ—‚Ì¬”Û
+    // scanf‚¾‚ÆAŒ…ˆì‚ê‚É‘Î‚µ‚Ä‘Îˆ‚µ‚«‚ê‚È‚¢‚½‚ß’ˆÓ‚Æ‚µ‚Ä•\¦B—áF3•¶š§ŒÀ‚Å1000‚Ì‚Æ‚«‚Í100‚ª“ü—Í‚³‚ê‚Ä‚µ‚Ü‚¤B
+    printf("If you enter a number greater than %d digits, it will be recognized as a %d-digit number from the beginning.\n", s_len, s_len);
+    scanf( "%8s%*[^\n]" , s );      // ‚±‚±‚ÍAƒZƒLƒ…ƒŠƒeƒB–Ê‚Æscanf‚ÌŠÖŒW‚©‚çAƒ}ƒWƒbƒNƒiƒ“ƒo[‚Å‚·‚ªA8‚ğ’¼“ü‚ê‚µ‚Ä‚¢‚Ü‚·B
+    while ( getchar() != '\n' );    // ‰üsƒR[ƒh‚Ì“Ç‚İ”ò‚Î‚µ
     printf( "Your input is %s.\n" , s );
-    if (sizeof( s ) < ( LEN_INPUT-1 ) )//çµ‚ç«¯æ–‡å­—ã‚’é™¤ãæ–‡å­—æ•°ã¨ã®æ¯”è¼ƒ
-    {
-        status = ERROR;
-    }
+
+    status = TRUE;
+
     return status;
 }
 
-/*@brief yyyymmddã®å½¢å¼ã®æ—¥ä»˜ã‚’tmæ§‹é€ ä½“ã«æ ¼ç´ã™ã‚‹*/
-/*@param [in] unsigned int    year_month_day : æŒ‡å®šå¹´æœˆæ—¥yyyymmdd   */
-/*@param [in] struct tm tm_time               :tmæ§‹é€ ä½“*/
-/*@return enum_status status         */
-enum_status GetTmStructureFromYearMonthDay(char* year_month_day,struct tm *tm_time)//yyyymmddå½¢å¼ã®æ—¥ä»˜ã‹ã‚‰tmæ§‹é€ ä½“ã‚’å¾—ã‚‹
+/*@brief yyyymmdd‚ÌŒ`®‚Ì“ú•t‚ğtm\‘¢‘Ì‚ÉŠi”[‚·‚é*/
+/*@param [in] unsigned int year_month_day : w’è”NŒ“úyyyymmdd   */
+/*@param [in] struct tm tm_time               :tm\‘¢‘Ì*/
+/*@return unsigned char status         */
+unsigned char GetTmStructureFromYearMonthDay(char* year_month_day,struct tm *tm_time)//yyyymmddŒ`®‚Ì“ú•t‚©‚çtm\‘¢‘Ì‚ğ“¾‚é
 {
-    enum_status status = SUCCESS ;//å‡¦ç†ã®æˆå¦
+    unsigned char status = FALSE ;// ˆ—‚Ì¬”Û
     int year;
     int month;
     int day;
-    unsigned char month_day;//1æœˆã€€ï¼’æœˆãƒ»ãƒ»ãƒ»ï¼‘ï¼’æœˆ ã®æ—¥æ•°
+    unsigned char month_day;// 1Œ@‚QŒEEE‚P‚QŒ ‚Ì“ú”
 
-    sscanf( year_month_day ,"%04d%02d%02d" , &year , &month , &day) ;//yyyymmddã®å½¢å¼ã§åˆ†å‰²ã—ä»£å…¥
-    //å…¥åŠ›å€¤ã‚¨ãƒ©ãƒ¼åˆ¤å®š
-    if ( (year < REFERENCE_YEAR) )//å¹´ã®ã‚¨ãƒ©ãƒ¼ï¼šåŸºæº–å¹´ä»¥å‰ã¯ã‚¨ãƒ©ãƒ¼
+    sscanf( year_month_day ,"%04d%02d%02d" , &year , &month , &day) ;// yyyymmdd‚ÌŒ`®‚Å•ªŠ„‚µ‘ã“ü
+    // “ü—Í’lƒGƒ‰[”»’è
+    if ( ( year < REFERENCE_YEAR) ||// ”N‚ÌƒGƒ‰[FŠî€”NˆÈ‘O‚ÍƒGƒ‰[
+         ( (month < 1) || (month > 12)) ) // Œ‚ÌƒGƒ‰[F1Œ‚æ‚è¬‚³‚¢A12Œ‚æ‚è‘å‚«‚¢ê‡‚ÍƒGƒ‰[
     {
-        status = ERROR;
+        status = FALSE;
+        return status;
     }
-    if ( (month < 1) || (month > 12)  )//æœˆã®ã‚¨ãƒ©ãƒ¼ï¼š1æœˆã‚ˆã‚Šå°ã•ã„ã€12æœˆã‚ˆã‚Šå¤§ãã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
+    status = GetDaysInThisMonth(year, month, &month_day); // ‰[”N‚É‚à‘Î‰‚·‚éŒ‚Ì“ú”æ“¾
+    if ( (day < 1) || (day > month_day)  )// “ú‚ÌƒGƒ‰[F1“ú‚æ‚è¬‚³‚¢AŒ‚Ì“ú”‚æ‚è‘å‚«‚¢ê‡‚ÍƒGƒ‰[
     {
-        status = ERROR;
+        status = FALSE;
+        return status;
     }
-    month_day = GetTheNumberOfDaysInThisMonth(year , month);//é–å¹´ã«ã‚‚å¯¾å¿œã™ã‚‹æœˆã®æ—¥æ•°å–å¾—
-    if ( (day < 1) || (day > month_day)  )//æ—¥ã®ã‚¨ãƒ©ãƒ¼ï¼š1æ—¥ã‚ˆã‚Šå°ã•ã„ã€æœˆã®æ—¥æ•°ã‚ˆã‚Šå¤§ãã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
+
+    status = InitTmStructure( tm_time, year, month, day);// “ü—Í’l‚ğ‰Šú‰»
+    if ( status == FALSE)
     {
-        status = ERROR;
+        return status;
     }
-    if (status == SUCCESS)
+
+    status = TRUE;
+
+    return status;
+}
+
+/*w’è‚µ‚½”NŒ“ú‚Åtm\‘¢‘Ì‚ğ‰Šú‰»‚·‚éB*/
+/*Šî–{“I‚É‚ÍŒo‰ß“úŒvZ‚Ì‚½‚ßA‚Í0:0:0‚Æ‚·‚éB*/
+/*@param[in]    struct tm time_in           : tm\‘¢‘Ì*/
+/*@param[in]    unsigned char year          : w’è”N*/
+/*@param[in]    unsigned char month         : w’èŒ*/
+/*@param[in]    unsigned char day           : w’è“ú*/
+/*@return       unsigned char status        : ƒGƒ‰[”»’è*/
+unsigned char InitTmStructure(struct tm *time_in, int year, int month, int day)
+{
+    unsigned char status = FALSE; // ˆ—‚Ì¬”Û
+
+    time_in->tm_year = year - REFERENCE_YEAR;   // tm\‘¢‘Ì‚Ìtm_year‚Ìd—l‚æ‚èA[1900‚©‚ç‚ÌŒo‰ß”N”]‚ÌŒ`®‚ÉC³
+    time_in->tm_mon = month - 1;                // tm\‘¢‘Ì‚Ìtm_mon‚Ìd—l‚æ‚èAŒ[0-11]
+    time_in->tm_mday = day;                     // tm\‘¢‘Ì‚Ìtm_mday‚Ìd—l‚æ‚èA“ú [1-31]
+    time_in->tm_hour = 0;                       // (“ú•t‚Ì‘«‚µˆø‚«‚ğ‚·‚é‚½‚ßA“ú‚ÌŠJn‚Å‚ ‚é0:0:0‚ğ‘ã“ü) 
+    time_in->tm_min = 0;                        // •ª(“ú•t‚Ì‘«‚µˆø‚«‚ğ‚·‚é‚½‚ßA“ú‚ÌŠJn‚Å‚ ‚é0:0:0‚ğ‘ã“ü) 
+    time_in->tm_sec = 0;                        // •b(“ú•t‚Ì‘«‚µˆø‚«‚ğ‚·‚é‚½‚ßA“ú‚ÌŠJn‚Å‚ ‚é0:0:0‚ğ‘ã“ü) 
+    time_in->tm_wday = 0;                       // —j“ú(ˆê“I‚É0‚ğ‘ã“ü) 
+    time_in->tm_yday = 0;                       // 1Œ1“ú‚©‚ç‚Ì“ú” (ˆê“I‚É0‚ğ‘ã“ü) 
+    time_in->tm_isdst = 0;                      // ‰ÄŠÔ–³Œø 
+
+    status = TRUE;
+
+    return status;
+}
+
+/*Šî€“ú‚©‚çw’è‚³‚ê‚½”NEŒE“ú‚Ü‚Å‚Ì‘“ú”(ƒVƒŠƒAƒ‹“ú”)‚ğæ“¾‚·‚é*/ 
+/*@param[in]    unsigned int    input_year     : w’è”N*/
+/*@param[in]    unsigned char   month          : w’èŒ*/
+/*@param[in]    unsigned char   day            : w’è“ú*/
+/*@param[in]    unsigned int *total_day        : ‘“ú”‚Ìƒoƒbƒtƒ@*/
+/*@return       unsigned char status           : ƒGƒ‰[”»’è*/
+unsigned char GetSerialDays(struct tm *input_time, unsigned int *total_day)
+{
+    unsigned int year = input_time->tm_year + REFERENCE_YEAR;
+    unsigned char month = input_time->tm_mon;
+    unsigned char day = input_time->tm_mday;
+    unsigned char input_month ;         // w’è”N‚ÌŒ‘” 
+    unsigned int i;                     // Šî€“ú‚©‚ç‚Ì—İÏ“ú”
+    total_day[0] = 0;                   // ‰Šú‰»
+    unsigned char status = FALSE;
+    unsigned int number_of_days_in_this_year = 0;
+
+    //Œo‰ß”N”•ª‚Ì“ú”‚ğ‘«‚µ‡‚í‚¹‚é
+    for (i = REFERENCE_YEAR; i <= year - 1; i++)
     {
-        tm_time->tm_year = year-REFERENCE_YEAR;//tmæ§‹é€ ä½“ã®tm_yearã®ä»•æ§˜ã‚ˆã‚Šã€[1900ã‹ã‚‰ã®çµŒéå¹´æ•°]ã®å½¢å¼ã«ä¿®æ­£
-        tm_time->tm_mon  = month-1;//tmæ§‹é€ ä½“ã®tm_monã®ä»•æ§˜ã‚ˆã‚Šã€æœˆ[0-11]
-        tm_time->tm_mday = day;//tmæ§‹é€ ä½“ã®tm_mdayã®ä»•æ§˜ã‚ˆã‚Šã€æ—¥ [1-31] 
-        /* æ™‚åˆ†ç§’æ›œæ—¥ã‚’é©å½“ã«å…¥åŠ› */
-        tm_time->tm_hour = 0; /* æ™‚ (é©å½“ã«å…¥åŠ›)  */
-        tm_time->tm_min  = 0; /* åˆ† (é©å½“ã«å…¥åŠ›)  */
-        tm_time->tm_sec  = 0; /* ç§’ (é©å½“ã«å…¥åŠ›)  */
-        tm_time->tm_wday = 0; /* æ›œæ—¥ (é©å½“ã«å…¥åŠ›) */
-        tm_time->tm_yday = 0; /* 1æœˆ1æ—¥ã‹ã‚‰ã®æ—¥æ•° (é©å½“ã«å…¥åŠ›) */        
+        status = GetDaysFromJanFirst(i, 12, &number_of_days_in_this_year); //12‚©Œ
+        if ( status == FALSE)
+        {
+            return status;
+        }
+
+        total_day[0] += number_of_days_in_this_year;
     }
+
+    // w’è”N“à‚Ìw’èŒ‚Ü‚Å‚Ì“ú”‚ğæ“¾‚µA‘«‚µ‡‚í‚¹‚é
+    if (month > 0) //w’èŒ‚ª1Œ‚Ìê‡‚Í“ú”‚Í‚O
+    {
+        input_month = month - 1; // w’èŒ‚Ì‚PŒ‘O‚ÌŒ––‚Ü‚Å‚È‚Ì‚ÅA1ƒ–Œ•ª’²®
+        status = GetDaysFromJanFirst(year, input_month, &number_of_days_in_this_year);
+        if (status == FALSE)
+        {
+            return status;
+        }
+    }else
+    {
+        number_of_days_in_this_year = 0;
+    }
+    total_day[0] += number_of_days_in_this_year;
+
+    // w’è”N“à‚Ìw’è“ú‚Ü‚Å‚Ì“ú”‚ğ‘«‚µ‡‚í‚¹‚é
+    total_day[0] += day;
+
+    status = TRUE;
+
     return status;
 }
 
 /*
-æŒ‡å®šã•ã‚ŒãŸå¹´ã«ãŠã‘ã‚‹ã€æŒ‡å®šã—ãŸæœˆã®ä¸€ãƒ¶æœˆã®æ—¥æ•°ã‚’å–å¾—ã™ã‚‹
-unsigned int    input_year     : æŒ‡å®šå¹´
-unsigned char   month          : æŒ‡å®šæœˆ
-*/
-unsigned char GetTheNumberOfDaysInThisMonth(unsigned int year,unsigned char month)
+w’è‚³‚ê‚½”N‚É‚¨‚¯‚éA1Œ‚©‚çw’è‚µ‚½Œ‚ÌŒ––‚Ü‚Å‚Ì‘“ú”‚ğæ“¾‚·‚é
+/*@param[in]    unsigned int    input_year     : w’è”N*/
+/*@param[in]    unsigned char   month          : w’èŒ*/
+/*@param[in]    unsigned int *this_year_day    : ‘“ú”‚Ìƒoƒbƒtƒ@*/
+/*@return       unsigned char status           : ƒGƒ‰[”»’è*/
+unsigned char GetDaysFromJanFirst(unsigned int year, unsigned char month, unsigned int *this_year_day)
 {
-  unsigned char month_day[12]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};//1æœˆã€€ï¼’æœˆãƒ»ãƒ»ãƒ»ï¼‘ï¼’æœˆ ã®æ—¥æ•°
-  //ã†ã‚‹ã†å¹´å‡¦ç† ã€€æ¡ä»¶ï¼šã€Œ400ã§å‰²ã‚Šåˆ‡ã‚Œã‚‹å¹´ã€ã‚‚ã—ãã¯ã€ã€Œ4ã§å‰²ã‚Šåˆ‡ã‚Œã‚‹å¹´ã‹ã¤ã€100ã§å‰²ã‚Šåˆ‡ã‚Œãªã„å¹´ã€
-  if (month==2)
-  {
-    if ((year % 400 == 0) || ((year % 4 == 0) && (year % 100 != 0)))
+    this_year_day[0] = 0;
+    unsigned char number_of_days_in_this_month = 0;
+    unsigned char status = FALSE;
+    unsigned char i;
+
+    for (i = 1; i <= month; i++)
     {
-      month_day[1] = 29;
-    }    
-  }
-  return month_day[month-1];
-}
+        status = GetDaysInThisMonth(year, i, &number_of_days_in_this_month);
+        if ( status == 0)
+        {
+            return status;
+        }
 
-/*æ›œæ—¥ã‚’æ±‚ã‚ã‚‹(ä¿®æ­£ã™ã‚‹)å‡¦ç†*/
-/*@param[in] struct tm *time_in*/
-/*@return status ã‚¨ãƒ©ãƒ¼åˆ¤å®š*/
-enum_status GetDayOfWeek(struct tm *time_in) {
-    time_t t;//time_tå‹ã®ãƒãƒƒãƒ•ã‚¡
-    enum_status status = SUCCESS;
-
-    /* mktime é–¢æ•°ã§å¤‰æ› */
-    if ( (t = mktime( time_in ) ) == (time_t)(-1) ) {
-        status = ERROR;
+        this_year_day[0] += number_of_days_in_this_month;
     }
-    /* åœ°æ–¹æ™‚ã«å¤‰æ› */
-    time_in = localtime( &t );
+    status = TRUE;
 
     return status;
 }
 
-/*çµŒéæ—¥æ•°ã‚’è¨ˆç®—ã™ã‚‹*/
-/*æ›œæ—¥ã‚’æ±‚ã‚ã‚‹(ä¿®æ­£ã™ã‚‹)å‡¦ç†*/
-/*@param[in] struct tm *start_time */
-/*@param[in] struct tm *end_time */
-/*@return result è¨ˆç®—çµæœ */
-float GetTheNumberOfDaysElapsed(struct tm start_time, struct tm end_time)
+/*w’è‚³‚ê‚½”N‚É‚¨‚¯‚éAw’è‚µ‚½Œ‚Ìˆêƒ–Œ‚Ì“ú”‚ğæ“¾‚·‚é*/
+/*@param[in]    unsigned int    input_year     : w’è”N*/
+/*@return       unsigned char   month          : w’èŒ*/
+unsigned char GetDaysInThisMonth(unsigned int year, unsigned char month, unsigned char *month_day)
 {
-    float result;
-    time_t start_serial_time = mktime( &start_time );
-    time_t end_serial_time = mktime( &end_time );
+    unsigned char status = FALSE;
+    unsigned char month_day_array[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; //1Œ@‚QŒEEE‚P‚QŒ ‚Ì“ú”
+    // ‚¤‚é‚¤”Nˆ— ğŒFu400‚ÅŠ„‚èØ‚ê‚é”Nv‚à‚µ‚­‚ÍAu4‚ÅŠ„‚èØ‚ê‚é”N‚©‚ÂA100‚ÅŠ„‚èØ‚ê‚È‚¢”Nv
+    if( (month > 0) || (month < 13) )
+    {    
+        if (month == 2)
+        {
+            if ((year % 400 == 0) || ((year % 4 == 0) && (year % 100 != 0)))
+            {
+                month_day_array[1] = 29;
+            }  
+        }
+        month_day[0] = ( unsigned char ) month_day_array[ month - 1 ];
+        status = TRUE;
+    }
 
-    result = difftime( end_serial_time , start_serial_time ) / 60 / 60 / 24;//ç§’ã‚’åˆ†ãƒ»æ™‚é–“ãƒ»æ—¥ã§å‰²ã‚‹
-
-    return result;
+    return status;
 }
 
-/*æ›œæ—¥ã‚’å‡ºåŠ›ã™ã‚‹*/
-/*@param[in] unsigned char wday æ›œæ—¥ã‚’è¡¨ã™æ•°å€¤ã€€tm_wdayã«æº–æ‹ */
-/*@return  */
-void PrintfDayOfTheWeek(unsigned char wday)
+/*—j“ú‚ğ‹‚ß‚é(C³‚·‚é)ˆ—*/
+/*@param[in]    struct tm *time_in  :w’è“ú*/
+/*@return       status              :ƒGƒ‰[”»’è*/
+unsigned char GetDayOfWeek(struct tm *time_in)
 {
-    char weeks[][10] = {//Wednesdayã®æ–‡å­—æ•°+1
+    struct tm time_reference;        //Šî€“ú
+    unsigned int t_time_reference;   //Šî€“ú‚ÌƒVƒŠƒAƒ‹“ú”
+    unsigned int t_time_in;         //w’è“ú‚ÌƒVƒŠƒAƒ‹“ú”
+    unsigned int t_difference;      //Šî€“ú‚©‚ç‚Ì·•ª
+    unsigned char status = FALSE;
+    
+    //Šî€“ú‚Ì‰Šú‰»
+    status = InitTmStructure( &time_reference, REFERENCE_YEAR, 1, 1);
+    if ( status == FALSE)
+    {
+        return status;
+    }
+    
+    status = GetSerialDays( &time_reference, &t_time_reference);
+    if (status == FALSE)
+    {
+        return status;
+    }
+
+    status = GetSerialDays(time_in, &t_time_in);
+    if (status == FALSE)
+    {
+        return status;
+    }
+
+    /* Šî€“ú‚Æ‚Ì·‚©‚ç—j“ú‚ğ”»’è */
+    t_difference =( t_time_in - t_time_reference);
+    time_in->tm_wday = t_difference % 7 + 1; //1900/01/01‚ÍŒ—j“úi1j
+    if ( time_in->tm_wday == 7)
+    {
+        time_in->tm_wday = 0;
+    }
+
+    status = TRUE;
+
+    return status;
+}
+
+/*Œo‰ß“ú”‚ğŒvZ‚·‚é*/
+/*@param[in] struct tm *start_time */
+/*@param[in] struct tm *end_time */
+/*@param[in] double *days_elapsed Œo‰ßŠÔ*/
+/*@return status ƒGƒ‰[”»’è */
+unsigned char GetDaysElapsed(struct tm start_time, struct tm end_time, double *days_elapsed)
+{
+    unsigned char status = FALSE;
+    unsigned int start_serial_time;//ƒVƒŠƒAƒ‹“ú”@ŠJn“ú
+    unsigned int end_serial_time;  //ƒVƒŠƒAƒ‹“ú”@I—¹“ú
+    status = GetSerialDays( &start_time, &start_serial_time);
+    if (status == FALSE)
+    {
+        return status;
+    }
+
+    status = GetSerialDays( &end_time, &end_serial_time);
+    if (status == FALSE)
+    {
+        return status;
+    }
+
+    days_elapsed[0] = (end_serial_time - start_serial_time) ; 
+
+    status = TRUE;
+
+    return status;
+}
+
+/*—j“ú‚ğo—Í‚·‚é*/
+/*@param[in] unsigned char wday —j“ú‚ğ•\‚·”’l@tm_wday‚É€‹’*/
+/*@return  */
+unsigned char PrintfDayOfTheWeek(unsigned char wday)
+{
+    unsigned char status = FALSE;
+    if ( ( wday < 0) || ( wday > 6 ) )
+    {
+        return status;
+    }
+    char weeks[][10] = {//Wednesday‚Ì•¶š”+1
         "Sunday",
         "Monday",
         "Tuesday",
@@ -248,16 +386,18 @@ void PrintfDayOfTheWeek(unsigned char wday)
     };
 
     printf("This day is %s.\n", weeks[wday]);
-    
-    return ;
+
+    status = TRUE;
+
+    return status;
 }
 
-/*çµŒéæ—¥æ•°ã‚’å‡ºåŠ›ã™ã‚‹*/
-/*@param[in] unsigned int days_elapsed çµŒéæ—¥æ•°*/
+/*Œo‰ß“ú”‚ğo—Í‚·‚é*/
+/*@param[in] unsigned int days_elapsed Œo‰ß“ú”*/
 /*@return  */
-void PrintfTheNumberOfDaysElapsed(int days_elapsed)
+void PrintfDaysElapsed(int days_elapsed)
 {
-    printf("The number of days elapsed from the birthday is %d days.",days_elapsed);
+    printf("The number of days elapsed from the birthday is %d days.\n",days_elapsed);
 
     return;
 }
