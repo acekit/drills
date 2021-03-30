@@ -88,50 +88,50 @@ int main( void )
 
 
 /*@brief ユーザーの誕生日を得る関数*/
-/*@param [in] struct tm birthday    */
-/*@param [in] unsigned char min_val 最小値    */
-/*@return unsigned char status         */
+/*@param [in] struct tm *birthday               :誕生日を格納するバッファ*/
+/*@return unsigned char is_function_succeeded   :エラー判定      */
 unsigned char GetUserBirthday(struct tm *birthday)
 {
     //1.まずは文字列として受け取る
-    unsigned char status = FALSE; //処理の成否
+    unsigned char is_function_succeeded = FALSE; //処理の成否
     char s[LEN_INPUT];//入力用のバッファ
     printf( "Please enter your birthday in the format yyyymmdd. ex:1999年10月10日=> 19991010\n") ;
-    status = GetUserInputString(s, LEN_INPUT - 1); // 終端文字用の1桁を引く
-    if ( status == FALSE )
+    is_function_succeeded = GetUserInputString(s, LEN_INPUT - 1); // 終端文字用の1桁を引く
+    if (is_function_succeeded == FALSE)
     {
         printf("Error at function GetUserInputString()\n");
-        return status;
-    }    
-    status = GetTmStructureFromYearMonthDay( s , birthday );
-    return status;
+        return is_function_succeeded;
+    }
+    is_function_succeeded = GetTmStructureFromYearMonthDay(s, birthday);
+    return is_function_succeeded;
 }
 
 /*@brief ユーザーの入力を文字列で得る関数*/
-/*@param [in] char *s 入力用バッファ   */
-/*@return char         */
+/*@param [in] char *s                               :入力用バッファ   */
+/*@param [in] unsigned int s_len                    :入力用文字数   */
+/*@return unsigned char    is_function_succeeded    :エラー判定*/
 unsigned char GetUserInputString(char *s , unsigned int s_len)// ユーザーの入力を文字列で得る
 {
     //1.まずは文字列として受け取る
-    unsigned char status = FALSE ;//処理の成否
+    unsigned char is_function_succeeded = FALSE ;//処理の成否
     // scanfだと、桁溢れに対して対処しきれないため注意として表示。例：3文字制限で1000のときは100が入力されてしまう。
     printf("If you enter a number greater than %d digits, it will be recognized as a %d-digit number from the beginning.\n", s_len, s_len);
     scanf( "%8s%*[^\n]" , s );      // ここは、セキュリティ面とscanfの関係から、マジックナンバーですが、8を直入れしています。
     while ( getchar() != '\n' );    // 改行コードの読み飛ばし
     printf( "Your input is %s.\n" , s );
 
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded;
 }
 
 /*@brief yyyymmddの形式の日付をtm構造体に格納する*/
-/*@param [in] unsigned int year_month_day : 指定年月日yyyymmdd   */
-/*@param [in] struct tm tm_time               :tm構造体*/
-/*@return unsigned char status         */
+/*@param [in] unsigned int year_month_day       :指定年月日yyyymmdd   */
+/*@param [in] struct tm tm_time                 :tm構造体*/
+/*@return unsigned char is_function_succeeded   :エラー判定    */
 unsigned char GetTmStructureFromYearMonthDay(char* year_month_day,struct tm *tm_time)//yyyymmdd形式の日付からtm構造体を得る
 {
-    unsigned char status = FALSE ;// 処理の成否
+    unsigned char is_function_succeeded = FALSE ;
     int year;
     int month;
     int day;
@@ -142,37 +142,37 @@ unsigned char GetTmStructureFromYearMonthDay(char* year_month_day,struct tm *tm_
     if ( ( year < REFERENCE_YEAR) ||// 年のエラー：基準年以前はエラー
          ( (month < 1) || (month > 12)) ) // 月のエラー：1月より小さい、12月より大きい場合はエラー
     {
-        status = FALSE;
-        return status;
+        is_function_succeeded = FALSE;
+        return is_function_succeeded;
     }
-    status = GetDaysInThisMonth(year, month, &month_day); // 閏年にも対応する月の日数取得
+    is_function_succeeded = GetDaysInThisMonth(year, month, &month_day); // 閏年にも対応する月の日数取得
     if ( (day < 1) || (day > month_day)  )// 日のエラー：1日より小さい、月の日数より大きい場合はエラー
     {
-        status = FALSE;
-        return status;
+        is_function_succeeded = FALSE;
+        return is_function_succeeded;
     }
 
-    status = InitTmStructure( tm_time, year, month, day);// 入力値を初期化
-    if ( status == FALSE)
+    is_function_succeeded = InitTmStructure( tm_time, year, month, day);// 入力値を初期化
+    if ( is_function_succeeded == FALSE)
     {
-        return status;
+        return is_function_succeeded;
     }
 
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded ;
 }
 
 /*指定した年月日でtm構造体を初期化する。*/
 /*基本的には経過日時計算のため、時刻は0:0:0とする。*/
-/*@param[in]    struct tm time_in           : tm構造体*/
-/*@param[in]    unsigned char year          : 指定年*/
-/*@param[in]    unsigned char month         : 指定月*/
-/*@param[in]    unsigned char day           : 指定日*/
-/*@return       unsigned char status        : エラー判定*/
+/*@param[in]    struct tm time_in                       : tm構造体*/
+/*@param[in]    unsigned char year                      : 指定年*/
+/*@param[in]    unsigned char month                     : 指定月*/
+/*@param[in]    unsigned char day                       : 指定日*/
+/*@return       unsigned char is_function_succeeded     : エラー判定*/
 unsigned char InitTmStructure(struct tm *time_in, int year, int month, int day)
 {
-    unsigned char status = FALSE; // 処理の成否
+    unsigned char is_function_succeeded = FALSE;
 
     time_in->tm_year = year - REFERENCE_YEAR;   // tm構造体のtm_yearの仕様より、[1900からの経過年数]の形式に修正
     time_in->tm_mon = month - 1;                // tm構造体のtm_monの仕様より、月[0-11]
@@ -184,17 +184,17 @@ unsigned char InitTmStructure(struct tm *time_in, int year, int month, int day)
     time_in->tm_yday = 0;                       // 1月1日からの日数 (一時的に0を代入) 
     time_in->tm_isdst = 0;                      // 夏時間無効 
 
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded ;
 }
 
 /*基準日から指定された年・月・日までの総日数(シリアル日数)を取得する*/ 
-/*@param[in]    unsigned int    input_year     : 指定年*/
-/*@param[in]    unsigned char   month          : 指定月*/
-/*@param[in]    unsigned char   day            : 指定日*/
-/*@param[in]    unsigned int *total_day        : 総日数のバッファ*/
-/*@return       unsigned char status           : エラー判定*/
+/*@param[in]    unsigned int    input_year              : 指定年*/
+/*@param[in]    unsigned char   month                   : 指定月*/
+/*@param[in]    unsigned char   day                     : 指定日*/
+/*@param[in]    unsigned int *total_day                 : 総日数のバッファ*/
+/*@return       unsigned char is_function_succeeded     : エラー判定*/
 unsigned char GetSerialDays(struct tm *input_time, unsigned int *total_day)
 {
     unsigned int year = input_time->tm_year + REFERENCE_YEAR;
@@ -203,16 +203,16 @@ unsigned char GetSerialDays(struct tm *input_time, unsigned int *total_day)
     unsigned char input_month ;         // 指定年の月総数 
     unsigned int i;                     // 基準日からの累積日数
     total_day[0] = 0;                   // 初期化
-    unsigned char status = FALSE;
+    unsigned char is_function_succeeded = FALSE;
     unsigned int number_of_days_in_this_year = 0;
 
     //経過年数分の日数を足し合わせる
     for (i = REFERENCE_YEAR; i <= year - 1; i++)
     {
-        status = GetDaysFromJanFirst(i, 12, &number_of_days_in_this_year); //12か月
-        if ( status == FALSE)
+        is_function_succeeded = GetDaysFromJanFirst(i, 12, &number_of_days_in_this_year); //12か月
+        if ( is_function_succeeded == FALSE)
         {
-            return status;
+            return is_function_succeeded;
         }
 
         total_day[0] += number_of_days_in_this_year;
@@ -222,10 +222,10 @@ unsigned char GetSerialDays(struct tm *input_time, unsigned int *total_day)
     if (month > 0) //指定月が1月の場合は日数は０
     {
         input_month = month - 1; // 指定月の１月前の月末までなので、1ヶ月分調整
-        status = GetDaysFromJanFirst(year, input_month, &number_of_days_in_this_year);
-        if (status == FALSE)
+        is_function_succeeded = GetDaysFromJanFirst(year, input_month, &number_of_days_in_this_year);
+        if (is_function_succeeded == FALSE)
         {
-            return status;
+            return is_function_succeeded;
         }
     }else
     {
@@ -236,45 +236,47 @@ unsigned char GetSerialDays(struct tm *input_time, unsigned int *total_day)
     // 指定年内の指定日までの日数を足し合わせる
     total_day[0] += day;
 
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded;
 }
 
 /*
 指定された年における、1月から指定した月の月末までの総日数を取得する
-/*@param[in]    unsigned int    input_year     : 指定年*/
-/*@param[in]    unsigned char   month          : 指定月*/
-/*@param[in]    unsigned int *this_year_day    : 総日数のバッファ*/
-/*@return       unsigned char status           : エラー判定*/
+/*@param[in]    unsigned int    input_year                : 指定年*/
+/*@param[in]    unsigned char   month                     : 指定月*/
+/*@param[in]    unsigned int *this_year_day               : 総日数のバッファ*/
+/*@return       unsigned char is_function_succeeded       : エラー判定*/
 unsigned char GetDaysFromJanFirst(unsigned int year, unsigned char month, unsigned int *this_year_day)
 {
     this_year_day[0] = 0;
     unsigned char number_of_days_in_this_month = 0;
-    unsigned char status = FALSE;
+    unsigned char is_function_succeeded = FALSE;
     unsigned char i;
 
     for (i = 1; i <= month; i++)
     {
-        status = GetDaysInThisMonth(year, i, &number_of_days_in_this_month);
-        if ( status == 0)
+        is_function_succeeded = GetDaysInThisMonth(year, i, &number_of_days_in_this_month);
+        if ( is_function_succeeded == 0)
         {
-            return status;
+            return is_function_succeeded ;
         }
 
         this_year_day[0] += number_of_days_in_this_month;
     }
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded ;
 }
 
 /*指定された年における、指定した月の一ヶ月の日数を取得する*/
-/*@param[in]    unsigned int    input_year     : 指定年*/
-/*@return       unsigned char   month          : 指定月*/
+/*@param[in]    unsigned int    input_year                 : 指定年*/
+/*@param[in]    unsigned int    input_month                : 指定月*/
+/*@param[in]    unsigned char *    month_day               : 日数のバッファ*/
+/*@return       unsigned char   is_function_succeeded      : エラー判定*/
 unsigned char GetDaysInThisMonth(unsigned int year, unsigned char month, unsigned char *month_day)
 {
-    unsigned char status = FALSE;
+    unsigned char is_function_succeeded = FALSE;
     unsigned char month_day_array[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; //1月　２月・・・１２月 の日数
     // うるう年処理 条件：「400で割り切れる年」もしくは、「4で割り切れる年かつ、100で割り切れない年」
     if( (month > 0) || (month < 13) )
@@ -287,40 +289,40 @@ unsigned char GetDaysInThisMonth(unsigned int year, unsigned char month, unsigne
             }  
         }
         month_day[0] = ( unsigned char ) month_day_array[ month - 1 ];
-        status = TRUE;
+        is_function_succeeded = TRUE;
     }
 
-    return status;
+    return is_function_succeeded ;
 }
 
 /*曜日を求める(修正する)処理*/
-/*@param[in]    struct tm *time_in  :指定日*/
-/*@return       status              :エラー判定*/
+/*@param[in]    struct tm *time_in           :指定日*/
+/*@return       is_function_succeeded        :エラー判定*/
 unsigned char GetDayOfWeek(struct tm *time_in)
 {
     struct tm time_reference;        //基準日
     unsigned int t_time_reference;   //基準日のシリアル日数
     unsigned int t_time_in;         //指定日のシリアル日数
     unsigned int t_difference;      //基準日からの差分
-    unsigned char status = FALSE;
+    unsigned char is_function_succeeded = FALSE;
     
     //基準日の初期化
-    status = InitTmStructure( &time_reference, REFERENCE_YEAR, 1, 1);
-    if ( status == FALSE)
+    is_function_succeeded = InitTmStructure( &time_reference, REFERENCE_YEAR, 1, 1);
+    if ( is_function_succeeded == FALSE)
     {
-        return status;
+        return is_function_succeeded ;
     }
     
-    status = GetSerialDays( &time_reference, &t_time_reference);
-    if (status == FALSE)
+    is_function_succeeded = GetSerialDays( &time_reference, &t_time_reference);
+    if ( is_function_succeeded == FALSE)
     {
-        return status;
+        return is_function_succeeded ;
     }
 
-    status = GetSerialDays(time_in, &t_time_in);
-    if (status == FALSE)
+    is_function_succeeded = GetSerialDays(time_in, &t_time_in);
+    if (is_function_succeeded == FALSE)
     {
-        return status;
+        return is_function_succeeded ;
     }
 
     /* 基準日との差から曜日を判定 */
@@ -331,49 +333,49 @@ unsigned char GetDayOfWeek(struct tm *time_in)
         time_in->tm_wday = 0;
     }
 
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded ;
 }
 
 /*経過日数を計算する*/
-/*@param[in] struct tm *start_time */
-/*@param[in] struct tm *end_time */
-/*@param[in] double *days_elapsed 経過時間*/
-/*@return status エラー判定 */
+/*@param[in] struct tm *start_time :開始日*/
+/*@param[in] struct tm *end_time   :終了日*/
+/*@param[in] double *days_elapsed  :経過日数のバッファ*/
+/*@return is_function_succeeded    :エラー判定 */
 unsigned char GetDaysElapsed(struct tm start_time, struct tm end_time, double *days_elapsed)
 {
-    unsigned char status = FALSE;
+    unsigned char is_function_succeeded = FALSE;
     unsigned int start_serial_time;//シリアル日数　開始日
     unsigned int end_serial_time;  //シリアル日数　終了日
-    status = GetSerialDays( &start_time, &start_serial_time);
-    if (status == FALSE)
+    is_function_succeeded = GetSerialDays( &start_time, &start_serial_time);
+    if (is_function_succeeded == FALSE)
     {
-        return status;
+        return is_function_succeeded;
     }
 
-    status = GetSerialDays( &end_time, &end_serial_time);
-    if (status == FALSE)
+    is_function_succeeded = GetSerialDays( &end_time, &end_serial_time);
+    if (is_function_succeeded == FALSE)
     {
-        return status;
+        return is_function_succeeded;
     }
 
     days_elapsed[0] = (end_serial_time - start_serial_time) ; 
 
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded;
 }
 
 /*曜日を出力する*/
-/*@param[in] unsigned char wday 曜日を表す数値　tm_wdayに準拠*/
-/*@return  */
+/*@param[in] unsigned char wday     :曜日を表す数値　tm_wdayに準拠*/
+/*@return  is_function_succeeded    :エラー判定*/
 unsigned char PrintfDayOfTheWeek(unsigned char wday)
 {
-    unsigned char status = FALSE;
+    unsigned char is_function_succeeded = FALSE;
     if ( ( wday < 0) || ( wday > 6 ) )
     {
-        return status;
+        return is_function_succeeded;
     }
     char weeks[][10] = {//Wednesdayの文字数+1
         "Sunday",
@@ -387,9 +389,9 @@ unsigned char PrintfDayOfTheWeek(unsigned char wday)
 
     printf("This day is %s.\n", weeks[wday]);
 
-    status = TRUE;
+    is_function_succeeded = TRUE;
 
-    return status;
+    return is_function_succeeded;
 }
 
 /*経過日数を出力する*/
